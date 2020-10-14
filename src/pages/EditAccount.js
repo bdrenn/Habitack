@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-export default function EditAccount() {
+export default function editAccount() {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
   const handleChange = (panel) => (event, isExpanded) => {
