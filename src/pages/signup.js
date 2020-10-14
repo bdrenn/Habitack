@@ -82,7 +82,7 @@ class signup extends Component {
       confirmPassword: this.state.confirmPassword,
     }
     axios
-      .post("/signup", newUserData)
+      .post("/api/signup", newUserData)
       .then((response) => {
         localStorage.setItem("AuthToken", `${response.data.token}`)
         this.setState({
@@ -257,7 +257,7 @@ class signup extends Component {
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="login" variant="body2">
+                <Link href="/" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

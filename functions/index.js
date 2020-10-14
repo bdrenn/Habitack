@@ -1,7 +1,8 @@
 //index.js
 
 const functions = require("firebase-functions")
-const app = require("express")()
+const express = require('express');
+const app = express();
 
 const { 
   getAllGoals,
@@ -20,4 +21,7 @@ app.get("/goals", getAllGoals)
 app.post('/login', loginUser);
 app.post('/signup', signUpUser);
 
-exports.api = functions.https.onRequest(app)
+const main = express();
+main.use('/api', app);
+
+exports.main = functions.https.onRequest(main);

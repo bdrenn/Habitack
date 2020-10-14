@@ -17,12 +17,13 @@ npm install
 ```
 - Deploy to Firebase
 ```bash
+// From root of project
 npm run build
 firebase deploy
 ```
 
-Notes
-- In this branch there's essentially two main modules: `src(frontend)` and `functions(backend/API)`.
+Developer Notes
+- This project is divided into two layers, Functions(Backend), src(Frontend)
 - Frontend:
     - Contains a directory `pages/` which supports the different UI's the user will see. Right now there's only `login` and `signup`. 
     - These grab data from the backend through API calls: GET, POST, etc... 
