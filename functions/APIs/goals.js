@@ -11,6 +11,8 @@ exports.getAllGoals = (request, response) => {
           goalsId: doc.id,
           title: doc.data().title,
           body: doc.data().body,
+          start: doc.data().start,
+          end: doc.data().end   
         })
       })
       return response.json(goals)
