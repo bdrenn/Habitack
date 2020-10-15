@@ -6,6 +6,9 @@ const app = express();
 
 const { 
   getAllGoals,
+  addGoal,
+  deleteGoal,
+  editGoal,
 } = require("./APIs/goals")
 
 const {
@@ -15,7 +18,10 @@ const {
 
 
 // Goals
-app.get("/goals", getAllGoals)
+app.get("/goals", getAllGoals);
+app.post("/goal", addGoal);
+app.delete("/goal/:goalId", deleteGoal);
+app.put("/goal/:goalId", editGoal);
 
 // Users
 app.post('/login', loginUser);
