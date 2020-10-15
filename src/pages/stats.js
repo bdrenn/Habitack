@@ -25,29 +25,28 @@ Chart.helpers.extend(Chart.controllers.doughnut.prototype, {
     }
 });
 
+const data = {
+    datasets: [{
+        data: [80, 50],
+        backgroundColor: [
+            'rgba(255, 99, 132, 0.5)',
+            'rgba(54, 162, 235, 0.2)',
+        ],
+    }],
+    labels: [
+        'Completed',
+        'Working'
+    ]
+}
+
 class Stats extends Component {
-    constructor(props) {
-        super(props)
-    }
 
     render() {
         return (
             <div>
                 <h1>Goal Stats</h1>
                 <Doughnut
-                    data={{
-                        datasets: [{
-                            data: [80, 50],
-                            backgroundColor: [
-                               'rgba(255, 99, 132, 0.5)',
-                               'rgba(54, 162, 235, 0.2)',
-                             ],
-                        }],
-                        labels: [
-                            'Completed',
-                            'Working'
-                        ]
-                    }}
+                    data={data}
                     options={{
                         cutoutPercentage: 70,
                         rotation: 120
