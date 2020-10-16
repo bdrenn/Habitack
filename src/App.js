@@ -15,7 +15,6 @@ function App() {
           <Route exact path="/" component={login} />
           <Route exact path="/signup" component={signup} />
           <Route exact path ="/editAccount/" component={editAccount} />
-          <Route exact path='/boiler' component={Boiler} />
         </Switch>
       </div>
     </Router>
