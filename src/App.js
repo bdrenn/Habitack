@@ -4,6 +4,7 @@ import login from "./pages/login"
 import signup from "./pages/signup"
 import editAccount from './pages/editAccount'
 import './Styles.css'
+import home from "./pages/home"
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route exact path="/" component={login} />
           <Route exact path="/signup" component={signup} />
           <Route exact path ="/editAccount/" component={editAccount} />
+          <Route exact path="/home" component={home} />
         </Switch>
       </div>
     </Router>
