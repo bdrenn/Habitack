@@ -3,20 +3,19 @@
 
 
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import MyBar from "../Utilities/myBar";
+import BottomNav from "../Utilities/myBotNav";
 
 //copyright function to be used in footer
 function Copyright() {
@@ -76,14 +75,7 @@ export default function Album() {
     return (
         <React.Fragment>
             <CssBaseline />
-            <AppBar position="relative">
-                <Toolbar>
-                    <AccountCircleIcon className={classes.icon} />
-                    <Typography variant="h6" color="inherit" noWrap>
-                        My Goals
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <MyBar page="My Goals" />
             <main>
                 {/* goal unit */}
                 <div className={classes.heroContent}>
@@ -146,7 +138,7 @@ export default function Album() {
             {/* Footer */}
             <footer className={classes.footer}>
                 <Typography variant="h6" align="center" gutterBottom>
-                    Habitackt
+                    Habitack
         </Typography>
                 <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
                     Your limits are only how big you can dream!
@@ -154,6 +146,7 @@ export default function Album() {
                 <Copyright />
             </footer>
             {/* End footer */}
+            <BottomNav />
         </React.Fragment>
     );
 }
