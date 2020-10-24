@@ -70,9 +70,30 @@ class Stats extends Component {
         super(props)
 
         this.state = {
+            total_goals: 0,
+            goals_completed: 0,
+            goals: 0
+        }
+    }
+
+    componentDidMount(){
+        axios
+            .get('/goals')
+            .then((response) => {
+                this.setState({
+                    goals: response.data
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+        console.log(this.state.goals)
+
+
+        this.setState({
             total_goals: 90,
             goals_completed: 10
-        }
+        })
     }
 
     render() {
