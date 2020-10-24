@@ -11,7 +11,8 @@ exports.getAllGoals = (request, response) => {
           goalsId: doc.id,
           title: doc.data().title,
           start: doc.data().start,
-          end: doc.data().end   
+          end: doc.data().end,
+          completion: doc.data().completion
         })
       })
       return response.json(goals)
@@ -25,21 +26,25 @@ exports.getAllGoals = (request, response) => {
 // Add a new goal
 exports.addGoal = (request, response) => {
 
+  // Check Request params exist
   if (request.body.title.trim() === ''){
     return response.status(400).json({title: 'Must not be empty'})
   }
-
   if (request.body.start.trim() === '') {
     return response.status(400).json({start: 'must not be empty'})
   }
   if (request.body.end.trim() === '') {
     return response.status(400).json({end: 'must not be empty'})
   }
+  if (request.body.completion === null) {
+    return response.status(400).json({completion: 'must not be empty'})
+  }
 
   const newGoal = {
     title: request.body.title,
     start: request.body.start,
-    end: request.body.end
+    end: request.body.end,
+    completion: request.body.completion
   }
   db
     .collection('goals')
