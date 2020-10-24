@@ -6,15 +6,9 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button/Button'
 import Avatar from '@material-ui/core/Avatar'
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import RestoreIcon from '@material-ui/icons/Restore';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Container from '@material-ui/core/Container';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import MyBar from "../Utilities/myBar";
+import BottomNav from "../Utilities/myBotNav"
 
 
 
@@ -86,14 +80,7 @@ export default function EditAccount() {
 
   return (
     <div>
-      <AppBar className={classes.app} position="relative">
-        <Toolbar>
-          <AccountCircleIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Edit Account
-                    </Typography>
-        </Toolbar>
-      </AppBar>
+      <MyBar page="Edit Account" />
       <Container maxWidth='md' >
         <div>
           <Avatar className={classes.large} styles={{ alignItems: 'center' }} />
@@ -174,20 +161,8 @@ export default function EditAccount() {
             </Typography>
           </AccordionDetails>
         </Accordion>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <BottomNavigation
-            value={value}
-            onChange={(event, newValue) => {
-              setValue(newValue);
-            }}
-            showLabels
-            className={classes.botNav}
-          >
-            <BottomNavigationAction label="Goals" icon={<RestoreIcon />} />
-            <BottomNavigationAction label="Home" icon={<FavoriteIcon />} />
-            <BottomNavigationAction label="Account" icon={<LocationOnIcon />} />
-           
-          </BottomNavigation>
+        <div >
+           <BottomNav />
         </div>
       </Container>
     </div>
