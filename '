@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import axios from 'axios'
-import MyBar from "../Utilities/myBar";
-import BottomNav from "../Utilities/myBotNav"
 
 
 const Chart = require('react-chartjs-2').Chart;
@@ -25,7 +23,7 @@ Chart.helpers.extend(Chart.controllers.doughnut.prototype, {
         ctx.font = `${fontSize}em sans-serif`;
         ctx.textBaseline = 'middle';
 
-        const text = `${chart.config.data.datasets[0].data[1]}%`
+        const text = `${chart.config.data.datasets[0].data[0]}%`
         const textX = Math.round((width - ctx.measureText(text).width) / 2);
         const textY = height / 2;
 
@@ -39,6 +37,7 @@ class ProgressChart extends Component {
     render() {
         return (
             <div>
+                <h1>Goal Stats</h1>
                 <Doughnut
                     data={{
                         datasets: [{
@@ -52,8 +51,8 @@ class ProgressChart extends Component {
                             ],
                         }],
                         labels: [
-                            'Todo',
-                            'Completed'
+                            'Completed',
+                            'Working'
                         ]
                     }}
                     options={{
@@ -71,22 +70,16 @@ class Stats extends Component {
         super(props)
 
         this.state = {
-            total_goals: 0,
-            goals_completed: 0,
+            total_goals: 90,
+            goals_completed: 10,
             goals: []
         }
 
-        this.getPercentageGoalsCompleted.bind(this);
-        this.getPercentageGoalsIncomplete.bind(this);
+        this.getGoalsCompleted.bind(this);
     }
 
-    getPercentageGoalsIncomplete(){
-      return 100 - this.getPercentageGoalsCompleted()
-    }
-
-    getPercentageGoalsCompleted(){
-        const completed = this.state.goals.filter(goal => goal.completion === false)
-        return Math.floor((completed.length / this.state.goals.length) * 100)
+    getGoalsCompleted(){
+        const completed = this.state.goals.filter(goal => goal.completion > 1)
     }
 
     componentDidMount(){
@@ -103,14 +96,15 @@ class Stats extends Component {
     }
 
     render() {
+        console.log(this.state.goals)
+        //this.getGoalsCompleted()
+
         return (
             <div>
-            <MyBar page="Goal Stats" />
                 <ProgressChart
-                    total_goals={this.getPercentageGoalsIncomplete()}
-                    goals_completed={this.getPercentageGoalsCompleted()}
+                    total_goals={this.state.total_goals}
+                    goals_completed={this.state.goals_completed}
                 />
-                <BottomNav />
             </div>
         )
     }
