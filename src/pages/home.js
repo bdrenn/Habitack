@@ -1,8 +1,8 @@
 //import statments 
 //useful icons here: https://material-ui.com/components/material-icons/
 
-
-import React from 'react';
+import React , { Component } from 'react';
+//import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -18,12 +18,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 
+
+import Goals from '../Utilities/Goals';
+import AddGoal from '../Utilities/AddGoal';
+
 //copyright function to be used in footer
 function Copyright() {
     return (
         //make element with 'Copyright 2020 [link to github]'
         <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
+            {'Copyright ï¿½ '}
             {new Date().getFullYear()}
             {' '}
             <Link color="inherit" href="https://github.com/bdrenn/Habitack">
@@ -69,7 +73,77 @@ const useStyles = makeStyles((theme) => ({
 
 //list of items to be diplayed 
 const cards = [1, 2, 3];
+//////
+class home extends Component {
+  
+    state ={
+      goals: [ 
+        {
+          id: 1,
+          title: 'Work out',
+          completed: false
+        },
+        {
+          id: 2,
+          title: 'Read book',
+          completed: false
+        },
+        {
+          id: 3,
+          title: 'Paint',
+          completed: false
+        },
+      ]
+      
+    }
+    //Mark goal complete
+    markComplete = (id) => {
+      this.setState({ goals: this.state.goals.map(goal => {
+        if(goal.id === id) {
+          goal.completed = !goal.completed
+        }
+        return goal;
+      }) });
+    }
+  
+    //Delete goal
+    delGoal = (id) => {
+      this.setState({ goals: [...this.state.goals.filter(goal => goal.id !== id)] });
+    }
+  
+    //add goal
+    addGoal = (title) => {
+      const newGoal = {
+        id:  4,
+        title,
+        completed: false
+      }
+      this.setState({ goals: [...this.state.goals, newGoal]});
+    }
+  
+    render() {
+      return (
+        <div className="App">
+          <div className="container">
+            <AddGoal addGoal={this.addGoal} />
+            <Goals goals={this.state.goals} markComplete={this.markComplete} delGoal={this.delGoal}/>
+          </div>  
+        </div>
+      );
+    }
+  }
+  
+  export default (home)
 
+
+
+
+
+
+
+
+////
+/*
 export default function Album() {
     const classes = useStyles();
 
@@ -85,7 +159,9 @@ export default function Album() {
                 </Toolbar>
             </AppBar>
             <main>
-                {/* goal unit */}
+                {/* goal unit *
+ ///}
+/*
                 <div className={classes.heroContent}>
                     <Container maxWidth="sm">
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
@@ -111,7 +187,9 @@ export default function Album() {
                     </Container>
                 </div>
                 <Container className={classes.cardGrid} maxWidth="md">
-                    {/* End goal unit */}
+                    {/* End goal unit */
+//}
+ /*
                     <Grid container spacing={4}>
                         {cards.map((card) => (
                             <Grid item key={card} xs={12} sm={6} md={4}>
@@ -143,7 +221,9 @@ export default function Album() {
                     </Grid>
                 </Container>
             </main>
-            {/* Footer */}
+            {/* Footer */
+//}
+/*
             <footer className={classes.footer}>
                 <Typography variant="h6" align="center" gutterBottom>
                     Habitackt
@@ -153,7 +233,9 @@ export default function Album() {
                 </Typography>
                 <Copyright />
             </footer>
-            {/* End footer */}
+            {/* End footer */
+//}
+/*
         </React.Fragment>
-    );
-}
+    );}
+*/
