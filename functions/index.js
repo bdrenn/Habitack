@@ -3,6 +3,7 @@
 const functions = require("firebase-functions")
 const express = require('express');
 const app = express();
+const auth = require('./util/auth')
 
 const { 
   getAllGoals,
@@ -13,7 +14,12 @@ const {
 
 const {
   loginUser,
-  signUpUser
+  signUpUser,
+  getCurrentUser,
+  updateName,
+  updateEmail,
+  updatePass,
+  changeDisplay
 } = require("./APIs/users")
 
 
@@ -26,6 +32,15 @@ app.put("/goal/:goalId", editGoal);
 // Users
 app.post('/login', loginUser);
 app.post('/signup', signUpUser);
+app.get("/getUser", auth, getCurrentUser);
+app.put("/updateUser", auth, updateName);
+app.put("/updateEmail", updateEmail)
+app.put("/updatePass", updatePass)
+app.put("/changeDisplay", changeDisplay)
+
+
+
+
 
 const main = express();
 main.use('/api', app);
