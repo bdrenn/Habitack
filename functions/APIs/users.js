@@ -1,6 +1,6 @@
 // users.js
 
-const { admin, db, users} = require("../util/admin")
+const { admin, db } = require("../util/admin")
 const config = require("../util/config")
 
 const firebase = require("firebase")
