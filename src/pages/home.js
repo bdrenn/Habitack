@@ -16,13 +16,14 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MyBar from "../Utilities/myBar";
 import BottomNav from "../Utilities/myBotNav";
+import {FitnessCenter as workoutIcon} from '@material-ui/icons';
 
 //copyright function to be used in footer
 function Copyright() {
     return (
         //make element with 'Copyright 2020 [link to github]'
         <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
+            {'Copyright ï¿½ '}
             {new Date().getFullYear()}
             {' '}
             <Link color="inherit" href="https://github.com/bdrenn/Habitack">
@@ -66,8 +67,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-//list of items to be diplayed 
-const cards = [1, 2, 3];
+//list of items to be diplayed , pull from back end here
+const goals = [
+    { id: 1, description: "work out", image: "https://cdn3.iconfinder.com/data/icons/vacation-4/32/vacation_18-512.png"}, 
+    { id: 2, description: "read", image: "https://cdn3.iconfinder.com/data/icons/book-shop-category-ouline/512/Book_Shop_Category-06-512.png"},
+    { id: 3, description: "work on sprint", image: "https://cdn0.iconfinder.com/data/icons/google-material-design-3-0/48/ic_trending_up_48px-512.png"}]//default
 
 export default function Album() {
     const classes = useStyles();
@@ -105,20 +109,20 @@ export default function Album() {
                 <Container className={classes.cardGrid} maxWidth="md">
                     {/* End goal unit */}
                     <Grid container spacing={4}>
-                        {cards.map((card) => (
-                            <Grid item key={card} xs={12} sm={6} md={4}>
+                        {goals.map((goal) => (
+                            <Grid item key={goal.id} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
                                     <CardMedia
                                         className={classes.cardMedia}
-                                        image="https://cdn3.iconfinder.com/data/icons/vacation-4/32/vacation_18-512.png"
+                                        image = {goal.image}
                                         title="Goal Icon description"
                                     />
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            Goal #
+                                            Goal #{goal.id}
                                         </Typography>
                                         <Typography>
-                                            Here goes a goal description
+                                            Description: {goal.description}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
