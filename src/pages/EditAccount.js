@@ -196,7 +196,9 @@ class EditAccount extends React.Component {
     const {classes} = this.props;
   return (
     <div>
+
       <MyBar page = "Edit Account"/>
+
       <Container maxWidth='md' >
         <div>
           <Avatar  className = {classes.large} styles={{ alignItems: 'center', width: '120px',height: '120px', marginTop: '15px',marginBottom: '15px',
@@ -271,9 +273,6 @@ class EditAccount extends React.Component {
                     </Typography>
                 </AccordionDetails>
             </Accordion>
-        
-
-        
         <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           <MyBotNav />
         </div>

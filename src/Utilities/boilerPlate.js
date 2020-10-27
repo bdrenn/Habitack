@@ -1,7 +1,8 @@
 import React from 'react';
 import Container from '@material-ui/core/Container';
-import MyBar from './myBar'
-import BottomNav from './myBotNav'
+import Typography from '@material-ui/core/Typography';
+import MyBar from './myBar'  // update path to '../Utilities/myBar' when adding a .js in pages dir
+import BottomNav from './myBotNav' // update path to '../Utilities/myBotNav' when adding a .js in pages dir
 
 
 
@@ -17,6 +18,10 @@ export default function BoilerPlate() {
             <MyBar page="name goes here"/>
             {/* This container is the essentially a <div> but can define the max allowed width */}
             <Container maxWidth='xs'>
+                {/* Habitack page Title (replace with logo in laster sprint) */}
+                <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                    Habitact
+                </Typography>
                 <div className='content'>
                     {/* Place your content Here* */}
                 </div>

@@ -132,7 +132,6 @@ exports.updateName = (request, response) => {
 }
 
 exports.updateEmail = (request, response) => {
-  
   let document = db.collection('users').doc(`${request.body.userName}`);
    document.update({
         email: request.body.email

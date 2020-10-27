@@ -3,27 +3,27 @@
 
 
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import MyBar from "../Utilities/myBar";
+import BottomNav from "../Utilities/myBotNav";
+import {FitnessCenter as workoutIcon} from '@material-ui/icons';
 
 //copyright function to be used in footer
 function Copyright() {
     return (
         //make element with 'Copyright 2020 [link to github]'
         <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright © '}
+            {'Copyright ï¿½ '}
             {new Date().getFullYear()}
             {' '}
             <Link color="inherit" href="https://github.com/bdrenn/Habitack">
@@ -67,8 +67,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-//list of items to be diplayed 
-const cards = [1, 2, 3];
+//list of items to be diplayed , pull from back end here
+const goals = [
+    { id: 1, description: "work out", image: "https://cdn3.iconfinder.com/data/icons/vacation-4/32/vacation_18-512.png"}, 
+    { id: 2, description: "read", image: "https://cdn3.iconfinder.com/data/icons/book-shop-category-ouline/512/Book_Shop_Category-06-512.png"},
+    { id: 3, description: "work on sprint", image: "https://cdn0.iconfinder.com/data/icons/google-material-design-3-0/48/ic_trending_up_48px-512.png"}]//default
 
 export default function Album() {
     const classes = useStyles();
@@ -76,14 +79,7 @@ export default function Album() {
     return (
         <React.Fragment>
             <CssBaseline />
-            <AppBar position="relative">
-                <Toolbar>
-                    <AccountCircleIcon className={classes.icon} />
-                    <Typography variant="h6" color="inherit" noWrap>
-                        My Goals
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <MyBar page="My Goals" />
             <main>
                 {/* goal unit */}
                 <div className={classes.heroContent}>
@@ -113,20 +109,20 @@ export default function Album() {
                 <Container className={classes.cardGrid} maxWidth="md">
                     {/* End goal unit */}
                     <Grid container spacing={4}>
-                        {cards.map((card) => (
-                            <Grid item key={card} xs={12} sm={6} md={4}>
+                        {goals.map((goal) => (
+                            <Grid item key={goal.id} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
                                     <CardMedia
                                         className={classes.cardMedia}
-                                        image="https://cdn3.iconfinder.com/data/icons/vacation-4/32/vacation_18-512.png"
+                                        image = {goal.image}
                                         title="Goal Icon description"
                                     />
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            Goal #
+                                            Goal #{goal.id}
                                         </Typography>
                                         <Typography>
-                                            Here goes a goal description
+                                            Description: {goal.description}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
@@ -146,7 +142,7 @@ export default function Album() {
             {/* Footer */}
             <footer className={classes.footer}>
                 <Typography variant="h6" align="center" gutterBottom>
-                    Habitackt
+                    Habitack
         </Typography>
                 <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
                     Your limits are only how big you can dream!
@@ -154,6 +150,7 @@ export default function Album() {
                 <Copyright />
             </footer>
             {/* End footer */}
+            <BottomNav />
         </React.Fragment>
     );
 }

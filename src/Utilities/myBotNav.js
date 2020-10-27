@@ -17,9 +17,9 @@ export default function MyBotNav () {
                         showLabels
                         className='botNav'
                     >
-                        <BottomNavigationAction label="Stats" icon={<ShowChart />} />
-                        <BottomNavigationAction label="Goals" icon={<HomeIcon />} />
-                        <BottomNavigationAction label="Calendar" icon={<CalendarToday />} />
+                        <BottomNavigationAction label="Stats" icon={<ShowChart />} href="stats" />
+                        <BottomNavigationAction label="Goals" icon={<HomeIcon />} href="home" />
+                        <BottomNavigationAction label="Calendar" icon={<CalendarToday />} href="calendar" />
 
                     </BottomNavigation>
                 </div>
