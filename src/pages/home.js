@@ -19,6 +19,7 @@ import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 import MyBar from "../Utilities/myBar";
 import BottomNav from "../Utilities/myBotNav";
+import {FitnessCenter as workoutIcon} from '@material-ui/icons';
 
 
 import Goals from '../Utilities/Goals';
@@ -139,6 +140,11 @@ class home extends Component {
 
 
 
+//list of items to be diplayed , pull from back end here
+/* const goals = [
+    { id: 1, description: "work out", image: "https://cdn3.iconfinder.com/data/icons/vacation-4/32/vacation_18-512.png"}, 
+    { id: 2, description: "read", image: "https://cdn3.iconfinder.com/data/icons/book-shop-category-ouline/512/Book_Shop_Category-06-512.png"},
+    { id: 3, description: "work on sprint", image: "https://cdn0.iconfinder.com/data/icons/google-material-design-3-0/48/ic_trending_up_48px-512.png"}]//default
 
 
 
@@ -186,20 +192,20 @@ export default function Album() {
 //}
  /*
                     <Grid container spacing={4}>
-                        {cards.map((card) => (
-                            <Grid item key={card} xs={12} sm={6} md={4}>
+                        {goals.map((goal) => (
+                            <Grid item key={goal.id} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
                                     <CardMedia
                                         className={classes.cardMedia}
-                                        image="https://cdn3.iconfinder.com/data/icons/vacation-4/32/vacation_18-512.png"
+                                        image = {goal.image}
                                         title="Goal Icon description"
                                     />
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            Goal #
+                                            Goal #{goal.id}
                                         </Typography>
                                         <Typography>
-                                            Here goes a goal description
+                                            Description: {goal.description}
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
