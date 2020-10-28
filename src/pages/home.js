@@ -127,10 +127,12 @@ class home extends Component {
     render() {
       return (
         <div className="App">
+         <MyBar page="Goal Stats" />
           <div className="container">
             <AddGoal addGoal={this.addGoal} />
             <Goals goals={this.state.goals} markComplete={this.markComplete} delGoal={this.delGoal}/>
           </div>  
+          <BottomNav />
         </div>
       );
     }
