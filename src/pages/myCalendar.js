@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Container from '@material-ui/core/Container';
 import { Scheduler, DayView, MonthView, Appointments } from '@devexpress/dx-react-scheduler-material-ui';//install devextreme-react@20.1
 import { ViewState } from '@devexpress/dx-react-scheduler';
@@ -20,7 +20,7 @@ export default function myCalendar() {
 
     return (
         //Main div box which will contain all the entire page, needed because must have one parent div for everything
-        <div className='parent-div'>
+        <div className='calendar'>
             {/*App bar on top of the page that displays little user icon and name of the page */}
             <MyBar page="My Calendar" />
             {/* This container is the essentially a <div> but can define the max allowed width */}

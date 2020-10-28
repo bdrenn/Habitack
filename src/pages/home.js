@@ -17,6 +17,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import MyBar from "../Utilities/myBar";
+import BottomNav from "../Utilities/myBotNav";
 
 
 import Goals from '../Utilities/Goals';
@@ -150,14 +152,7 @@ export default function Album() {
     return (
         <React.Fragment>
             <CssBaseline />
-            <AppBar position="relative">
-                <Toolbar>
-                    <AccountCircleIcon className={classes.icon} />
-                    <Typography variant="h6" color="inherit" noWrap>
-                        My Goals
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <MyBar page="My Goals" />
             <main>
                 {/* goal unit *
  ///}
@@ -226,7 +221,7 @@ export default function Album() {
 /*
             <footer className={classes.footer}>
                 <Typography variant="h6" align="center" gutterBottom>
-                    Habitackt
+                    Habitack
         </Typography>
                 <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
                     Your limits are only how big you can dream!
@@ -236,6 +231,6 @@ export default function Album() {
             {/* End footer */
 //}
 /*
-        </React.Fragment>
-    );}
-*/
+//        </React.Fragment>
+//    );}
+//*/

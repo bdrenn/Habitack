@@ -3,7 +3,7 @@
 }
 
 body {
-    background-color: #5280e9;
+    background-color: #F9F9F9;
     width: auto;
 }
 
@@ -38,5 +38,9 @@ body {
     margin-bottom: 15px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.calendar {
+    background-color: #ffffff;
 }
 
