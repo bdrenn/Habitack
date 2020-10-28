@@ -76,7 +76,7 @@ exports.signUpUser = (request, response) => {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         username: newUser.username,
-        displayname: newuser.username,
+        displayname: newUser.username,
         phoneNumber: newUser.phoneNumber,
         country: newUser.country,
         email: newUser.email,
