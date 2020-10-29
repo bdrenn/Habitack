@@ -88,6 +88,7 @@ class Stats extends Component {
     axios
       .get("/goals")
       .then((response) => {
+        console.log(response.data)
         this.setState({
           goals: response.data,
         })
