@@ -10,6 +10,7 @@ const {
   addGoal,
   deleteGoal,
   editGoal,
+  addGoalPic,
 } = require("./APIs/goals")
 
 const {
@@ -25,7 +26,7 @@ const {
 
 // Goals
 app.get("/goals", getAllGoals);
-app.post("/goal", addGoal);
+app.post("/goal", auth, addGoal);
 app.delete("/goal/:goalId", deleteGoal);
 app.put("/goal/:goalId", editGoal);
 
@@ -37,6 +38,7 @@ app.put("/updateUser", auth, updateName);
 app.put("/updateEmail", updateEmail)
 app.put("/updatePass", updatePass)
 app.put("/changeDisplay", changeDisplay)
+app.post("/addGoalPic",auth, addGoalPic);
 
 
 
