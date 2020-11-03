@@ -85,9 +85,6 @@ exports.signUpUser = (request, response) => {
       }
       return db.doc(`/users/${newUser.username}`).set(userCredentials)
     })
-    .then((idtoken) => { 
-      return db.doc(`/goals/${newUser.username}`).create();
-    })
     .then(() => {
       return response.status(201).json({ token })
     })

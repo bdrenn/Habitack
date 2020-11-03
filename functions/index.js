@@ -25,7 +25,6 @@ app.get("/goals", getAllGoals)
 app.post("/goal", addGoal)
 app.delete("/goal/:goalId", deleteGoal)
 app.put("/goal/:goalId", editGoal)
-app.post("/addGoalPic",auth, addGoalPic);
 
 // Users
 app.post("/login", loginUser)
@@ -35,7 +34,6 @@ app.put("/updateUser", auth, updateName)
 app.put("/updateEmail", updateEmail)
 app.put("/updatePass", updatePass)
 app.put("/changeDisplay", changeDisplay)
-
 
 const main = express()
 main.use("/api", app)
