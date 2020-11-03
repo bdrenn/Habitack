@@ -82,7 +82,7 @@ class signup extends Component {
       confirmPassword: this.state.confirmPassword,
     }
     axios
-      .post("/api/signup", newUserData)
+      .post("/signup", newUserData)
       .then((response) => {
         localStorage.setItem("AuthToken", `${response.data.token}`)
         this.setState({
