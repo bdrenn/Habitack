@@ -5,7 +5,8 @@ const crypto = require('crypto')
 
 // Get All Goals in collection
 exports.getAllGoals = (request, response) => {
-  db.collection(`goals/${request.user.username}/exercises`)
+  let currUser = request.user.username;
+  db.collection(`goals/${currUser}/exercises`)
     .get()
     .then((data) => {
       let goals = []
