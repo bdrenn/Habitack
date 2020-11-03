@@ -1,8 +1,11 @@
-const { db } = require("../util/admin")
+const { db, admin } = require("../util/admin")
+const firebase = require("firebase")
+const config = require("../util/config")
+const crypto = require('crypto')
 
 // Get All Goals in collection
 exports.getAllGoals = (request, response) => {
-  db.collection("goals")
+  db.collection(`goals/${request.user.username}/exercises`)
     .get()
     .then((data) => {
       let goals = []
@@ -12,7 +15,8 @@ exports.getAllGoals = (request, response) => {
           title: doc.data().title,
           start: doc.data().start,
           end: doc.data().end,
-          completion: doc.data().completion
+          completion: doc.data().completion,
+          imageUrl: doc.data().imageUrl
         })
       })
       return response.json(goals)
@@ -44,11 +48,12 @@ exports.addGoal = (request, response) => {
     title: request.body.title,
     start: request.body.start,
     end: request.body.end,
-    completion: request.body.completion
+    completion: request.body.completion,
+    imageUrl: ""
   }
   db
-    .collection('goals')
-    .add(newGoal)
+    .collection('goals').doc(request.user.username).collection('exercises').doc(request.body.title)
+    .set(newGoal)
     .then((doc)=>{
       const responseGoal = newGoal;
       responseGoal.id = doc.id;
@@ -94,4 +99,74 @@ exports.editGoal = (request, response) => {
       error: err.code
     });
   });
+};
+
+exports.addGoalURL = (request, response) => {
+  
+}
+
+
+// Upload profile picture
+exports.addGoalPic = (request, response) => {
+  //imports
+  const BusBoy = require('busboy');
+	const path = require('path');
+	const os = require('os');
+	const fs = require('fs');
+  const busboy = new BusBoy({ headers: request.headers });
+  const id = crypto.randomBytes(8).toString('hex');
+  
+  //let myCollection = db.doc(`/goals/${request.user.username}/${request.body.title}`)
+  
+
+	let imageFileName;
+  let imageToBeUploaded = {};
+  //check if it is a image
+	busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+		if (mimetype !== 'image/png' && mimetype !== 'image/jpeg') {
+			return response.status(400).json({ error: 'Wrong file type submited' });
+    }
+    //get the extension .jpg etc
+    const imageExtension = filename.split('.')[filename.split('.').length - 1];
+    
+        //filename is username.extension
+        imageFileName = `${id} + ${request.user.username}.${imageExtension}`;
+    const filePath = path.join(os.tmpdir(), imageFileName);
+    
+		imageToBeUploaded = { filePath, mimetype };
+		file.pipe(fs.createWriteStream(filePath));
+    });
+
+    busboy.on('field', function(fieldname, val) {    
+      request.body[fieldname] = val;
+});
+
+	busboy.on('finish', () => {
+		admin
+			.storage()
+			.bucket()
+			.upload(imageToBeUploaded.filePath, {
+				resumable: false,
+				metadata: {
+					metadata: {
+						contentType: imageToBeUploaded.mimetype
+					}
+				}
+			})
+			.then(() => {
+        
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+				return db.collection("goals").doc(`${request.user.username}`).collection("exercises").doc(request.body.title).set({
+					imageUrl}, {merge: true}
+				);
+			})
+			.then(() => {
+				return response.json({ message: 'Image uploaded successfully' });
+			})
+			.catch((error) => {
+				console.error(error);
+				return response.status(500).json({ error: error.code });
+			});
+	});
+	busboy.end(request.rawBody);
 };
