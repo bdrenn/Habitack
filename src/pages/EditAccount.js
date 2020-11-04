@@ -174,7 +174,7 @@ class EditAccount extends React.Component {
 		const authToken = localStorage.getItem('AuthToken');
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
-			.get('api/getUser')
+			.get('getUser')
 			.then((response) => {
         this.setState({
           firstName: response.data.userCredentials.firstName,
