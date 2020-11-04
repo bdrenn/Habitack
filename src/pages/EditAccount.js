@@ -168,6 +168,7 @@ class EditAccount extends React.Component {
 
   componentDidMount = () => {
     document.title = 'Edit User Account'
+    document.body.style.backgroundColor = "#5280e9";
     
     authMiddleWare(this.props.history);
 		const authToken = localStorage.getItem('AuthToken');
@@ -188,8 +189,7 @@ class EditAccount extends React.Component {
 					this.props.history.push('/')
 				}
 				console.log(error);
-      });
-      
+      }); 
     }
   
   render(){

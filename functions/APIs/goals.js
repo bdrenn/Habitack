@@ -1,10 +1,8 @@
-const { db, admin } = require("../util/admin")
-const firebase = require("firebase")
-const config = require("../util/config")
-const crypto = require('crypto')
+const { db } = require("../util/admin")
 
 // Get All Goals in collection
 exports.getAllGoals = (request, response) => {
+
   db.collection(`goals/${request.user.username}/exercises`)
     .get()
     .then((data) => {
@@ -15,7 +13,7 @@ exports.getAllGoals = (request, response) => {
           title: doc.data().title,
           start: doc.data().start,
           end: doc.data().end,
-          completion: doc.data().completion,
+          completion: doc.data().completion
         })
       })
       return response.json(goals)
@@ -47,13 +45,11 @@ exports.addGoal = (request, response) => {
     title: request.body.title,
     start: request.body.start,
     end: request.body.end,
-    completion: request.body.completion,
-    
-    
+    completion: request.body.completion
   }
   db
-    .collection('goals').doc(request.user.username).collection('exercises').doc(request.body.title)
-    .set(newGoal)
+    .collection('goals')
+    .add(newGoal)
     .then((doc)=>{
       const responseGoal = newGoal;
       responseGoal.id = doc.id;
@@ -100,6 +96,7 @@ exports.editGoal = (request, response) => {
     });
   });
 };
+
 
 
 
@@ -167,3 +164,4 @@ exports.addGoalPic = (request, response) => {
 	});
 	busboy.end(request.rawBody);
 };
+
