@@ -8,7 +8,11 @@ import home from "./pages/home"
 import myCalendar from "./pages/myCalendar"
 import Stats from './pages/stats'
 
+import axios from 'axios'
+
 import './Styles.css'
+
+axios.defaults.baseURL = "https://habitack-398ba.web.app/api"
 
 
 function App() {

@@ -15,7 +15,7 @@ exports.loginUser = (request, response) => {
     email: request.body.email,
     password: request.body.password,
   }
-
+ 
   const { valid, errors } = validateLoginData(user)
   if (!valid) return response.status(400).json(errors)
 
@@ -76,6 +76,7 @@ exports.signUpUser = (request, response) => {
         firstName: newUser.firstName,
         lastName: newUser.lastName,
         username: newUser.username,
+        displayname: newUser.username,
         phoneNumber: newUser.phoneNumber,
         country: newUser.country,
         email: newUser.email,
@@ -97,4 +98,81 @@ exports.signUpUser = (request, response) => {
           .json({ general: "Something went wrong, please try again" })
       }
     })
+}
+
+exports.getCurrentUser = (request, response) => {
+  let userData = {};
+db
+  .doc(`/users/${request.user.username}`)
+  .get()
+  .then((doc) => {
+    if (doc.exists) {
+              userData.userCredentials = doc.data();
+              return response.json(userData);
+    }	
+  })
+  .catch((error) => {
+    console.error(error);
+    return response.status(500).json({ error: error.code });
+  });
+}
+
+exports.updateName = (request, response) => {
+  let document = db.collection('users').doc(`${request.body.userName}`);
+    return document.update({
+        firstName: request.body.firstName,
+        lastName: request.body.lastName
+    })
+  .then(() => {
+      response.json({message: 'updated successfully'})
+  })
+  .catch((err) => {
+      console.error("Error updating name: ", error);
+      });
+}
+
+exports.updateEmail = (request, response) => {
+  let document = db.collection('users').doc(`${request.body.userName}`);
+   document.update({
+        email: request.body.email
+    })
+  .then(() => {
+      response.json({message: 'updated successfully'})
+  })
+  .catch((err) => {
+      console.error("Error updating email: ", error);
+      })
+      var user = firebase.auth().currentUser;
+      console.log(user.email)
+      firebase.auth().currentUser.updateEmail(request.body.email)
+    .then(() => {
+      response.json({ message: "success using auth"} )
+    })
+    .catch(err => {
+      console.error("Error updating with auth: ", err)
+    })
+}
+
+exports.updatePass = (request, response) => {
+      firebase.auth().currentUser.updatePassword(request.body.passOne)
+    .then(() => {
+      response.json({ message: "success using auth"} )
+    })
+    .catch(err => {
+      console.error("Error updating with auth: ", err)
+    })
+}
+
+exports.changeDisplay = (request, response) => {
+  let document = db.collection('users').doc(`${request.body.username}`);
+    return document.update({
+        displayname: request.body.displayName,
+    })
+  .then(() => {
+      response.json({message: 'updated successfully'})
+  })
+  .catch((err) => {
+      console.error("Error updating name: ", error);
+      });
+  
 }

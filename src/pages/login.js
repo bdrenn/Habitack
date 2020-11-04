@@ -78,13 +78,13 @@ class login extends Component {
       password: this.state.password,
     }
     axios
-      .post("/api/login", userData)
+      .post("/login", userData)
       .then((response) => {
         localStorage.setItem("AuthToken", `Bearer ${response.data.token}`)
         this.setState({
           loading: false,
         })
-        this.props.history.push("/")
+        this.props.history.push("/home")
       })
       .catch((error) => {
         this.setState({
