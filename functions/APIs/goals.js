@@ -101,9 +101,6 @@ exports.editGoal = (request, response) => {
   });
 };
 
-exports.addGoalURL = (request, response) => {
-  
-}
 
 
 // Upload profile picture
