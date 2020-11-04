@@ -107,7 +107,7 @@ class EditAccount extends React.Component {
      }
 
      console.log(account)
-    axios.put("api/updateUser", account)
+    axios.put("/updateUser", account)
     .then((respone) => {
       console.log(respone)
       this.props.history.push('/EditAccount')
@@ -126,7 +126,7 @@ class EditAccount extends React.Component {
       userName: this.state.userName
      }
      console.log(account)
-    axios.put("api/updateEmail", account)
+    axios.put("/updateEmail", account)
     .then((respone) => {
       console.log(respone)
       this.props.history.push('/EditAccount')
@@ -143,7 +143,7 @@ class EditAccount extends React.Component {
       console.log("Passwords do not match")
     }
     else{
-      axios.put("/api/updatePass", account)
+      axios.put("/updatePass", account)
       .then((response) => {
         console.log("success changing password")
       })
@@ -156,7 +156,7 @@ class EditAccount extends React.Component {
   updateDisplayName= (e) => {
     e.preventDefault();
     let account = {displayName: this.state.displayName, username: this.state.userName}
-    axios.put("/api/changeDisplay", account)
+    axios.put("/changeDisplay", account)
     .then((response) => {
       console.log("success changing display name")
     })
