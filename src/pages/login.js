@@ -14,7 +14,8 @@ import withStyles from "@material-ui/core/styles/withStyles"
 import Container from "@material-ui/core/Container"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import MyBar from "../Utilities/myBar"
-import BottomNav from "../Utilities/myBotNav"
+
+import logo from "../img/logo.png"
 
 import axios from "axios"
 
@@ -45,6 +46,7 @@ const styles = (theme) => ({
     position: "absolute",
   },
 })
+
 
 class login extends Component {
   constructor(props) {
@@ -105,9 +107,7 @@ class login extends Component {
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockOutlinedIcon />
-            </Avatar>
+            <img src={logo} />
             <form className={classes.form} noValidate>
               <TextField
                 variant="outlined"
@@ -166,7 +166,6 @@ class login extends Component {
             </form>
           </div>
         </Container>
-        <BottomNav />
       </div>
     )
   }
