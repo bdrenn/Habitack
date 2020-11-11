@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="logo.png">
+  <img src="src/img/logo.png">
 </p>
 
 ## Local Session (Firebase)
