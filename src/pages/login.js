@@ -13,6 +13,9 @@ import Typography from "@material-ui/core/Typography"
 import withStyles from "@material-ui/core/styles/withStyles"
 import Container from "@material-ui/core/Container"
 import CircularProgress from "@material-ui/core/CircularProgress"
+import MyBar from "../Utilities/myBar"
+
+import logo from "../img/logo.png"
 
 import axios from "axios"
 
@@ -43,6 +46,7 @@ const styles = (theme) => ({
     position: "absolute",
   },
 })
+
 
 class login extends Component {
   constructor(props) {
@@ -98,73 +102,71 @@ class login extends Component {
     const { classes } = this.props
     const { errors, loading } = this.state
     return (
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Login
-          </Typography>
-          <form className={classes.form} noValidate>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              helperText={errors.email}
-              error={errors.email ? true : false}
-              onChange={this.handleChange}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              helperText={errors.password}
-              error={errors.password ? true : false}
-              onChange={this.handleChange}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={this.handleSubmit}
-              disabled={loading || !this.state.email || !this.state.password}
-            >
-              Sign In
-              {loading && (
-                <CircularProgress size={30} className={classes.progess} />
-              )}
-            </Button>
-            <Grid container>
-              <Grid item>
-                <Link href="signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
+      <div>
+        <MyBar page="Login" />
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={classes.paper}>
+            <img src={logo} />
+            <form className={classes.form} noValidate>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                helperText={errors.email}
+                error={errors.email ? true : false}
+                onChange={this.handleChange}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                helperText={errors.password}
+                error={errors.password ? true : false}
+                onChange={this.handleChange}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={this.handleSubmit}
+                disabled={loading || !this.state.email || !this.state.password}
+              >
+                Sign In
+                {loading && (
+                  <CircularProgress size={30} className={classes.progess} />
+                )}
+              </Button>
+              <Grid container>
+                <Grid item>
+                  <Link href="signup" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
               </Grid>
-            </Grid>
-            {errors.general && (
-              <Typography variant="body2" className={classes.customError}>
-                {errors.general}
-              </Typography>
-            )}
-          </form>
-        </div>
-      </Container>
+              {errors.general && (
+                <Typography variant="body2" className={classes.customError}>
+                  {errors.general}
+                </Typography>
+              )}
+            </form>
+          </div>
+        </Container>
+      </div>
     )
   }
 }
