@@ -4,6 +4,13 @@ import axios from "axios"
 import MyBar from "../Utilities/myBar"
 import BottomNav from "../Utilities/myBotNav"
 
+// Materials UI
+import { 
+  Button,
+  Container,
+  Grid
+} from '@material-ui/core'
+
 const Chart = require("react-chartjs-2").Chart
 
 /*
@@ -102,11 +109,18 @@ class Stats extends Component {
     return (
       <div>
         <MyBar page="Goal Stats" />
-        <ProgressChart
-          total_goals={this.getPercentageGoalsIncomplete()}
-          goals_completed={this.getPercentageGoalsCompleted()}
-        />
-        <BottomNav />
+        <Container component="main" maxWidth="xs">
+          <ProgressChart
+            total_goals={this.getPercentageGoalsIncomplete()}
+            goals_completed={this.getPercentageGoalsCompleted()}
+          />
+          <Grid container alignItems="center" justify="center">
+          <Button variant="contained">Day</Button>
+          <Button variant="contained">Week</Button>
+          <Button variant="contained">Month</Button>
+          <BottomNav />
+          </Grid>
+        </Container>
       </div>
     )
   }
