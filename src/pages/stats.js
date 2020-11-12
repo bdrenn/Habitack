@@ -5,6 +5,13 @@ import MyBar from "../Utilities/myBar"
 import BottomNav from "../Utilities/myBotNav"
 import { authMiddleWare } from '../Utilities/auth'
 
+// Materials UI
+import { 
+  Button,
+  Container,
+  Grid
+} from '@material-ui/core'
+
 const Chart = require("react-chartjs-2").Chart
 
 /*
@@ -110,11 +117,18 @@ class Stats extends Component {
     return (
       <div>
         <MyBar page="Goal Stats" />
-        <ProgressChart
-          total_goals={this.getPercentageGoalsIncomplete()}
-          goals_completed={this.getPercentageGoalsCompleted()}
-        />
-        <BottomNav state={0}/>
+        <Container component="main" maxWidth="xs">
+          <ProgressChart
+            total_goals={this.getPercentageGoalsIncomplete()}
+            goals_completed={this.getPercentageGoalsCompleted()}
+          />
+          <Grid container alignItems="center" justify="center">
+          <Button variant="contained">Day</Button>
+          <Button variant="contained">Week</Button>
+          <Button variant="contained">Month</Button>
+          <BottomNav />
+          </Grid>
+        </Container>
       </div>
     )
   }
