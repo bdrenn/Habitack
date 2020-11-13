@@ -47,7 +47,7 @@ class ProgressChart extends Component {
           data={{
             datasets: [
               {
-                data: [this.props.total_goals, this.props.goals_completed],
+                data: [this.props.goals_to_complete, this.props.goals_completed],
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.5)",
                   "rgba(54, 162, 235, 0.2)",
@@ -71,8 +71,8 @@ class Stats extends Component {
     super(props)
 
     this.state = {
-      total_goals: 0,
-      goals_completed: 0,
+      total_goals: 10,
+      goals_completed: 50,
       goals: [],
     }
 
@@ -105,19 +105,24 @@ class Stats extends Component {
       })
   }
 
+  handleclick() {
+    console.log(this.state.goals)
+    console.log("Button Pressed!")
+  }
+
   render() {
     return (
       <div>
         <MyBar page="Goal Stats" />
         <Container component="main" maxWidth="xs">
           <ProgressChart
-            total_goals={this.getPercentageGoalsIncomplete()}
-            goals_completed={this.getPercentageGoalsCompleted()}
+            goals_to_complete={this.state.total_goals-this.state.goals_completed}
+            goals_completed={this.state.goals_completed}
           />
           <Grid container alignItems="center" justify="center">
-          <Button variant="contained">Day</Button>
-          <Button variant="contained">Week</Button>
-          <Button variant="contained">Month</Button>
+          <Button variant="contained" onClick={this.handleclick.bind(this)}>Day</Button>
+          <Button variant="contained" onClick={this.handleclick.bind(this)}>Week</Button>
+          <Button variant="contained" onClick={this.handleclick.bind(this)}>Month</Button>
           <BottomNav />
           </Grid>
         </Container>
