@@ -1,4 +1,7 @@
-const { db } = require("../util/admin")
+const { admin, db } = require("../util/admin")
+const firebase = require("firebase")
+const config = require("../util/config")
+const crypto = require('crypto')
 
 // Get All Goals in collection
 exports.getAllGoals = (request, response) => {
@@ -120,7 +123,7 @@ exports.addGoalPic = (request, response) => {
     const imageExtension = filename.split('.')[filename.split('.').length - 1];
     
         //filename is username.extension
-        imageFileName = `${id} + ${request.user.username}.${imageExtension}`;
+        imageFileName = `${id}${request.user.username}.${imageExtension}`;
     const filePath = path.join(os.tmpdir(), imageFileName);
     
 		imageToBeUploaded = { filePath, mimetype };
@@ -146,9 +149,11 @@ exports.addGoalPic = (request, response) => {
 			.then(() => {
         
         const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
-				return db.collection("goals").doc(`${request.user.username}`).collection("exercises").doc(request.body.title).set({
-					imageUrl}, {merge: true}
-				);
+				//return db.collection("goals").doc(`${request.user.username}`).collection("exercises").doc(request.body.title).set({
+					//imageUrl}, {merge: true}
+        //);
+        
+        return db.collection("goals").doc(`${request.user.username}`).set({imageUrl}, {merge: true});
 			})
 			.then(() => {
 				return response.json({ message: 'Image uploaded successfully' });
@@ -160,3 +165,15 @@ exports.addGoalPic = (request, response) => {
 	});
 	busboy.end(request.rawBody);
 };
+
+exports.getGoalPic = (request, response) => {
+  let userPic = {}
+  db.collection("goals").doc(`${request.user.username}`).get()
+  .then((doc) => {
+    userPic.pic = doc.data().imageUrl
+    return response.json(userPic)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+}
