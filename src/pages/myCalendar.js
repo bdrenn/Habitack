@@ -17,7 +17,7 @@ class myCalendar extends Component {
             goals: [],
             goalsAPI: []
         }
-
+        
     }
 
     componentDidMount() {
@@ -27,19 +27,49 @@ class myCalendar extends Component {
                 this.setState({
                     goalsAPI: response.data,
                 })
+                this.formatter()
+                console.log("mount :", this.state.goalsAPI)
+                console.log("after :", this.state.goals)
+                
             })
             .catch((err) => {
                 console.log(err)
             })
     }
 
+    displayCalendar() {
+        if (this.state.goals && this.state.goals.length > 0) {
+            return <Scheduler
+                data={this.state.goals}
+            >
+
+                
+                <MonthView
+                    title="Month"
+                    selectedDateFormat="{0:M}"
+                    selectedShortDateFormat="{0:M}"
+                />
+                <Appointments />
+            </Scheduler>;
+        }
+        return <h3> "Loading..." </h3>
+    }
+
     formatter() {
-        //this.state.goals = [        //pull goal data from back end and place here 
-        //    { startDate: '2020-11-18T09:45', endDate: '2020-11-18T11:00', title: 'Read' },
-        //     { startDate: '2020-11-18T12:00', endDate: '2020-11-18T13:30', title: 'Go to a gym' }];
+        //example { startDate: '2020-11-18T09:45', endDate: '2020-11-18T11:00', title: 'Read' },
+        
         this.state.goalsAPI.map((goal, index) => (
-            this.state.goals[index] = { startDate: this.formatDate(goal.start, true) , endDate: this.formatDate(goal.end, false), title: goal.title }
+            this.state.goals[index] = { startDate: this.formatDate(goal.start, true), endDate: this.formatDate(goal.start, false), title: goal.title },
+            console.log("in formater", this.state.goals[index])
         ))
+
+        //update the state to re-render
+        this.setState({        
+        });
+
+        
+
+
     };
 
     formatDate(date, startFlag) {
@@ -49,18 +79,19 @@ class myCalendar extends Component {
         dtg = dtg + month + "-";
         var day = date.slice(3, 5);
         if (startFlag) {
-            console.log('was true');
             dtg = dtg + day + "T09:00";
         }
         else
-            dtg = dtg + day + "T09:10";
+            dtg = dtg + day + "T10:00";
         return dtg;
     };
 
     render() {
+
+        
         const currentDate = '2020-11';
 
-        { this.formatter() }
+        
 
         return (
             //Main div box which will contain all the entire page, needed because must have one parent div for everything
@@ -70,24 +101,20 @@ class myCalendar extends Component {
 
                 {/* This container is the essentially a <div> but can define the max allowed width */}
                 <Container maxWidth='lg' >
+
+
+
                     <div className='calendar'>
                         {/* This is a calendar view, can also set to DayView instead of MonthView*/}
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                             Habitact
                         </Typography>
-                        <Scheduler
-                            data={this.state.goals}
-                        >
-                            <ViewState
-                                currentDate={currentDate}
-                            />
-                            <MonthView
-                                title="Month"
-                                selectedDateFormat="{0:M}"
-                                selectedShortDateFormat="{0:M}"
-                            />
-                            <Appointments />
-                        </Scheduler>
+
+                        
+                        {this.displayCalendar()}
+                        
+
+                        
                     </div>
                     {/* Bottom navigation module */}
                     <BottomNav />
