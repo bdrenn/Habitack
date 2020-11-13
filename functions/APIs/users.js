@@ -144,7 +144,7 @@ exports.updateEmail = (request, response) => {
       })
       var user = firebase.auth().currentUser;
       console.log(user.email)
-      firebase.auth().currentUser.updateEmail(request.body.email)
+      return firebase.auth().currentUser.updateEmail(request.body.email)
     .then(() => {
       response.json({ message: "success using auth"} )
     })
@@ -154,7 +154,7 @@ exports.updateEmail = (request, response) => {
 }
 
 exports.updatePass = (request, response) => {
-      firebase.auth().currentUser.updatePassword(request.body.passOne)
+      return firebase.auth().currentUser.updatePassword(request.body.passOne)
     .then(() => {
       response.json({ message: "success using auth"} )
     })
