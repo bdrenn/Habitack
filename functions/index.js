@@ -8,7 +8,7 @@ const auth = require("./util/auth")
 const cors = require("cors")
 app.use(cors())
 
-const { getAllGoals, addGoal, deleteGoal, editGoal, addGoalPic } = require("./APIs/goals")
+const { getAllGoals, addGoal, deleteGoal, editGoal, addGoalPic, getGoalPic } = require("./APIs/goals")
 
 const {
   loginUser,
@@ -27,6 +27,7 @@ app.post("/goal", auth, addGoal);
 app.delete("/goal/:goalId", deleteGoal);
 app.put("/goal/:goalId", editGoal);
 app.post("/addGoalPic",auth, addGoalPic);
+app.get("/getGoalPic", auth, getGoalPic);
 
 
 // Users
