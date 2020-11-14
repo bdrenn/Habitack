@@ -92,7 +92,7 @@ class myCalendar extends Component {
         var rule = 'FREQ=DAILY;COUNT=';
         var startday = startGoal.slice(3, 5);
         var endday = endGoal.slice(3, 5);
-        var days = parseInt(endday, 10) - parseInt(startday, 10)  ;
+        var days = parseInt(endday, 10) - parseInt(startday, 10) + 1;
         rule = rule + days.toString();
         console.log("math", startday, endday, days);
         return rule;
