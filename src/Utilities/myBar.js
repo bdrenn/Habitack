@@ -12,6 +12,7 @@ export default class MyBar extends React.Component {
         this.state = {};
     }
     render() {
+        {document.title = 'Habitact'}
         return (
             <AppBar className='app' position="relative">
                 <Toolbar >

@@ -3,6 +3,8 @@ import Container from '@material-ui/core/Container';
 import { Scheduler, DayView, MonthView, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 import MyBar from "../Utilities/myBar";
 import BottomNav from "../Utilities/myBotNav";
 import axios from "axios";
@@ -52,7 +54,9 @@ class myCalendar extends Component {
                 <Appointments />
             </Scheduler>;
         }
-        return <h3> "Loading..." </h3>
+        return <Typography align="center" >
+                  <CircularProgress />
+               </Typography>
     }
 
     formatter() {
@@ -60,7 +64,7 @@ class myCalendar extends Component {
         
         this.state.goalsAPI.map((goal, index) => (
             this.state.goals[index] = { startDate: this.formatDate(goal.start, true), endDate: this.formatDate(goal.start, false), title: goal.title },
-            console.log("in formater", this.state.goals[index])
+            console.log("in formatter", this.state.goals[index])
         ))
 
         //update the state to re-render
@@ -100,7 +104,7 @@ class myCalendar extends Component {
                 <MyBar page="My Calendar" />
 
                 {/* This container is the essentially a <div> but can define the max allowed width */}
-                <Container maxWidth='lg' >
+                <Container maxWidth='lg' align="center"  >
 
 
 
@@ -109,12 +113,9 @@ class myCalendar extends Component {
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                             Habitact
                         </Typography>
-
-                        
+                                                
                         {this.displayCalendar()}
-                        
-
-                        
+                                                
                     </div>
                     {/* Bottom navigation module */}
                     <BottomNav />
