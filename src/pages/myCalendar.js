@@ -3,6 +3,8 @@ import Container from '@material-ui/core/Container';
 import { Scheduler, DayView, MonthView, Appointments } from '@devexpress/dx-react-scheduler-material-ui';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
 import MyBar from "../Utilities/myBar";
 import BottomNav from "../Utilities/myBotNav";
 import axios from "axios";
@@ -52,24 +54,24 @@ class myCalendar extends Component {
                 <Appointments />
             </Scheduler>;
         }
-        return <h3> "Loading..." </h3>
+        return <Typography align="center" >
+                  <CircularProgress />
+               </Typography>
     }
 
     formatter() {
         //example { startDate: '2020-11-18T09:45', endDate: '2020-11-18T11:00', title: 'Read' },
         
         this.state.goalsAPI.map((goal, index) => (
-            this.state.goals[index] = { startDate: this.formatDate(goal.start, true), endDate: this.formatDate(goal.start, false), title: goal.title },
-            console.log("in formater", this.state.goals[index])
+            this.state.goals[index] = { startDate: this.formatDate(goal.start, true), endDate: this.formatDate(goal.start, false), title: goal.title, rRule: this.repeatCount(goal.start, goal.end) },
+            console.log("in formatter", this.state.goals[index])
         ))
 
         //update the state to re-render
         this.setState({        
         });
 
-        
-
-
+       
     };
 
     formatDate(date, startFlag) {
@@ -86,6 +88,16 @@ class myCalendar extends Component {
         return dtg;
     };
 
+    repeatCount(startGoal, endGoal) {
+        var rule = 'FREQ=DAILY;COUNT=';
+        var startday = startGoal.slice(3, 5);
+        var endday = endGoal.slice(3, 5);
+        var days = parseInt(endday, 10) - parseInt(startday, 10) + 1;
+        rule = rule + days.toString();
+        console.log("math", startday, endday, days);
+        return rule;
+    }
+
     render() {
 
         
@@ -100,7 +112,7 @@ class myCalendar extends Component {
                 <MyBar page="My Calendar" />
 
                 {/* This container is the essentially a <div> but can define the max allowed width */}
-                <Container maxWidth='lg' >
+                <Container maxWidth='lg' align="center"  >
 
 
 
@@ -109,12 +121,9 @@ class myCalendar extends Component {
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                             Habitact
                         </Typography>
-
-                        
+                                                
                         {this.displayCalendar()}
-                        
-
-                        
+                                                
                     </div>
                     {/* Bottom navigation module */}
                     <BottomNav />
