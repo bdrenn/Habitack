@@ -63,7 +63,12 @@ class myCalendar extends Component {
         //example { startDate: '2020-11-18T09:45', endDate: '2020-11-18T11:00', title: 'Read' },
         
         this.state.goalsAPI.map((goal, index) => (
-            this.state.goals[index] = { startDate: this.formatDate(goal.start, true), endDate: this.formatDate(goal.start, false), title: goal.title, rRule: this.repeatCount(goal.start, goal.end) },
+            this.state.goals[index] = {
+                startDate: this.formatDate(goal.start, true),
+                endDate: this.formatDate(goal.start, false),
+                title: goal.title,
+                rRule: this.repeatCount(goal.start, goal.end)
+            },
             console.log("in formatter", this.state.goals[index])
         ))
 
@@ -92,7 +97,7 @@ class myCalendar extends Component {
         var rule = 'FREQ=DAILY;COUNT=';
         var startday = startGoal.slice(3, 5);
         var endday = endGoal.slice(3, 5);
-        var days = parseInt(endday, 10) - parseInt(startday, 10) + 1;
+        var days = parseInt(endday, 10) - parseInt(startday, 10) + 1 ;
         rule = rule + days.toString();
         console.log("math", startday, endday, days);
         return rule;
