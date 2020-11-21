@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import MyBar from "../Utilities/myBar";
 import BottomNav from "../Utilities/myBotNav";
 import axios from "axios";
+import { authMiddleWare } from '../Utilities/auth'
 
 
 class myCalendar extends Component {
@@ -23,6 +24,9 @@ class myCalendar extends Component {
     }
 
     componentDidMount() {
+        authMiddleWare(this.props.history);
+		const authToken = localStorage.getItem('AuthToken');
+		axios.defaults.headers.common = { Authorization: `${authToken}` };
         axios
             .get("/goals")
             .then((response) => {
@@ -119,7 +123,7 @@ class myCalendar extends Component {
                     <div className='calendar'>
                         {/* This is a calendar view, can also set to DayView instead of MonthView*/}
                         <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                            Habitact
+                            Habitack
                         </Typography>
                                                 
                         {this.displayCalendar()}
