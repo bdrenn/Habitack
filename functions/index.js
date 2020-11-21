@@ -9,11 +9,11 @@ const auth = require("./util/auth")
 const cors = require("cors")
 app.use(cors())
 
-const { getAllGoals, addGoal, deleteGoal, editGoal, addGoalPic, getGoalPic } = require("./APIs/goals")
+const { getAllGoals, addGoal, deleteGoal, editGoal, addGoalPic, getGoalPic, updateCompletionField } = require("./APIs/goals")
 
 const {
   loginUser,
-  signUpUser,
+  signUpUser, 
   getCurrentUser,
   updateName,
   updateEmail,
@@ -22,34 +22,34 @@ const {
 } = require("./APIs/users")
 
 // Goals
-
-app.get("/goals", getAllGoals);
-app.post("/goal", auth, addGoal);
-app.delete("/goal/:goalId", deleteGoal);
-app.put("/goal/:goalId", editGoal);
-app.post("/addGoalPic",auth, addGoalPic);
-app.get("/getGoalPic", auth, getGoalPic);
+app.get("/goals", auth, getAllGoals); //works
+app.post("/goal", auth, addGoal); //works
+app.delete("/goal/:goalId", auth, deleteGoal); //works
+app.put("/goal/:goalId", editGoal); 
+app.post("/addGoalPic/:goalId",auth, addGoalPic); //works
+app.get("/getGoalPic/:goalId", auth, getGoalPic); 
+app.put("/complete/:goalId", auth, updateCompletionField); //works
 
 
 // Users
-app.post("/login", loginUser)
-app.post("/signup", signUpUser)
+app.post("/login", loginUser) 
+app.post("/signup", signUpUser) //works
 app.get("/getUser", auth, getCurrentUser)
 app.put("/updateUser", auth, updateName)
 app.put("/updateEmail", updateEmail)
 app.put("/updatePass", updatePass)
 app.put("/changeDisplay", changeDisplay)
 
+//instantiates credentials
 const transporter = nodemailer.createTransport({
   service: "Gmail",
-  //port: 587,
-  //secure: false, // true for 465, false for other ports
   auth: {
     user: "habitack2020@gmail.com", // generated ethereal user
     pass: "csulb2020" // generated ethereal password
   },
 });
 
+//trigger when a new user is created
 exports.welcomeMessage = functions.firestore.document('/users/{user}').onCreate((snap,context) => {
   const firstName = snap.data().firstName;
   const lastName = snap.data().lastName;
@@ -60,12 +60,12 @@ exports.welcomeMessage = functions.firestore.document('/users/{user}').onCreate(
 
 //send email to users when first create a goal
 function mail(firstName, lastName, email) {  
-    // send mail with defined transport object
-    console.log(email)
+  //use predefined auth variables to send email with Habitack gmail
     return transporter.sendMail({
       from: 'Habitack Team <habitack2020@gmail.com>', // sender address
       to: email, // list of receivers
       subject: "Welcome to Habitack!", // Subject line
+      //body
       html: `<h1>Hello ${firstName} ${lastName},</h1> <br /> 
       <p>Welcome to your journey towards self improvement! Below is an introduction guide to help get you started</p><br />
       <p>Habitack is a habit tracker designed to facilitate users with tracking goals that can change your life for the better. <br />
