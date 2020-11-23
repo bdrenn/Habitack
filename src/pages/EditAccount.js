@@ -167,8 +167,7 @@ class EditAccount extends React.Component {
   }
 
   componentDidMount = () => {
-    document.title = 'Edit User Account'
-    document.body.style.backgroundColor = "#5280e9";
+    document.body.style.backgroundColor = "#F9F9F9";
     
     authMiddleWare(this.props.history);
 		const authToken = localStorage.getItem('AuthToken');
@@ -197,7 +196,7 @@ class EditAccount extends React.Component {
   return (
     <div>
 
-      <MyBar page = "Edit Account"/>
+      <MyBar page = {`Edit Account ${this.state.firstName} ${this.state.lastName}`}/>
 
       <Container maxWidth='md' >
         <div>

@@ -3,6 +3,7 @@ import { Doughnut } from "react-chartjs-2"
 import axios from "axios"
 import MyBar from "../Utilities/myBar"
 import BottomNav from "../Utilities/myBotNav"
+import { authMiddleWare } from '../Utilities/auth'
 
 const Chart = require("react-chartjs-2").Chart
 
@@ -85,6 +86,9 @@ class Stats extends Component {
   }
 
   componentDidMount() {
+    authMiddleWare(this.props.history);
+		const authToken = localStorage.getItem('AuthToken');
+		axios.defaults.headers.common = { Authorization: `${authToken}` };
     axios
       .get("/goals")
       .then((response) => {
