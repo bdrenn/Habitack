@@ -83,7 +83,7 @@ exports.signUpUser = (request, response) => {
         createdAt: new Date().toISOString(),
         userId,
       }
-      return db.doc(`/users/${newUser.username}`).set(userCredentials)
+      return db.collection("users").doc(`${userCredentials.username}`).set(userCredentials)
     })
     .then(() => {
       return response.status(201).json({ token })
@@ -164,7 +164,7 @@ exports.updatePass = (request, response) => {
 }
 
 exports.changeDisplay = (request, response) => {
-  let document = db.collection('users').doc(`${request.body.username}`);
+  let document = db.collection('users').doc(`${request.body.userName}`);
     return document.update({
         displayname: request.body.displayName,
     })
