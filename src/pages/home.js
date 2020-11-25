@@ -44,7 +44,7 @@ class home extends Component {
 
         this.state = {
             isOpen: false,
-            today: new Date().toLocaleString(),
+            today: '',
             goals: [], //local copy of goals , only goals active today
             goalsAPI: [] // goals pulled from the back end
 
@@ -65,19 +65,43 @@ class home extends Component {
                 })
                 
                 console.log("mount :", this.state.goalsAPI)
-                
+                this.setDate()
+                this.filterGoals()
 
             })
             .catch((err) => {
                 console.log(err)
             })
-        this.setDate()
+        
+        
     }
 
     setDate() {
+        this.state.today = new Date().toLocaleString();
         var day = this.state.today.split(',');
         this.setState({ today: day[0] });
-    } 
+    }
+
+    filterGoals() {
+        this.state.goalsAPI.map((goal, index) => (
+            //this.state.goals[index] = { id: goal.goalsId, title: goal.title }, 
+            this.state.goals[index] =  this.isToday(goal) ,
+            console.log("in filter", this.state.goals[index])            
+        ))
+
+        //update the state to re-render
+        this.setState({
+        });
+    }
+
+    isToday(goal) {
+        if (this.state.today < goal.end && this.state.today > goal.start)
+            return goal
+        else
+            return null
+    }
+
+
 
     render() {
 
@@ -170,7 +194,7 @@ class home extends Component {
                             }
 
                             <Grid container spacing={4}>
-                                {this.state.goalsAPI.map((goal, index) => (
+                                {this.state.goals.filter(g => g!==null).map((goal, index) => (
                                     <Grid item key={goal.id} xs={12} sm={6} md={4}>
                                         <Card >
                                             <CardMedia
