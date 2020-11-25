@@ -20,223 +20,216 @@ import Link from '@material-ui/core/Link';
 import MyBar from "../Utilities/myBar";
 import BottomNav from "../Utilities/myBotNav";
 import {FitnessCenter as workoutIcon} from '@material-ui/icons';
+import axios from "axios";
+import { authMiddleWare } from '../Utilities/auth'
+
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 
 import Goals from '../Utilities/Goals';
 import AddGoal from '../Utilities/AddGoal';
 
-//copyright function to be used in footer
-function Copyright() {
-    return (
-        //make element with 'Copyright 2020 [link to github]'
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Copyright � '}
-            {new Date().getFullYear()}
-            {' '}
-            <Link color="inherit" href="https://github.com/bdrenn/Habitack">
-                https://github.com/bdrenn/Habitack
-            </Link>{' '}
-            {'.'}
-        </Typography>
-    );
-}//end copyright element
 
-//use css template CssBaseline from '@material-ui/core/CssBaseline'
-const useStyles = makeStyles((theme) => ({
-    icon: {
-        marginRight: theme.spacing(2),
-    },
-    heroContent: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(8, 0, 6),
-    },
-    heroButtons: {
-        marginTop: theme.spacing(4),
-    },
-    cardGrid: {
-        paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(8),
-    },
-    card: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    cardMedia: {
-        paddingTop: '56.25%', // 16:9
-    },
-    cardContent: {
-        flexGrow: 1,
-    },
-    footer: {
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(6),
-    },
-}));
 
-//list of items to be diplayed 
-const cards = [1, 2, 3];
-//////
+
 class home extends Component {
-  
-    state ={
-      goals: [ 
-        {
-          id: 1,
-          title: 'Work out',
-          completed: false
-        },
-        {
-          id: 2,
-          title: 'Read book',
-          completed: false
-        },
-        {
-          id: 3,
-          title: 'Paint',
-          completed: false
-        },
-      ]
-      
-    }
-    //Mark goal complete
-    markComplete = (id) => {
-      this.setState({ goals: this.state.goals.map(goal => {
-        if(goal.id === id) {
-          goal.completed = !goal.completed
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            isOpen: false,
+            today: '',
+            goals: [], //local copy of goals , only goals active today
+            goalsAPI: [] // goals pulled from the back end
+
+
         }
-        return goal;
-      }) });
+
     }
-  
-    //Delete goal
-    delGoal = (id) => {
-      this.setState({ goals: [...this.state.goals.filter(goal => goal.id !== id)] });
+
+    componentDidMount() {
+        authMiddleWare(this.props.history);
+        const authToken = localStorage.getItem('AuthToken');
+        axios.defaults.headers.common = { Authorization: `${authToken}` };
+        axios
+            .get("/goals")
+            .then((response) => {
+                this.setState({
+                    goalsAPI: response.data,
+                })
+                
+                console.log("mount :", this.state.goalsAPI)
+                this.setDate()
+                this.filterGoals()
+
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        
+        
     }
-  
-    //add goal
-    addGoal = (title) => {
-      const newGoal = {
-        id:  4,
-        title,
-        completed: false
-      }
-      this.setState({ goals: [...this.state.goals, newGoal]});
+
+    setDate() {
+        this.state.today = new Date().toLocaleString();
+        var day = this.state.today.split(',');
+        this.setState({ today: day[0] });
     }
-  
+
+    filterGoals() {
+        this.state.goalsAPI.map((goal, index) => (
+            //this.state.goals[index] = { id: goal.goalsId, title: goal.title }, 
+            this.state.goals[index] =  this.isToday(goal) ,
+            console.log("in filter", this.state.goals[index])            
+        ))
+
+        //update the state to re-render
+        this.setState({
+        });
+    }
+
+    isToday(goal) {
+        if (this.state.today < goal.end && this.state.today > goal.start)
+            return goal
+        else
+            return null
+    }
+
+
+
     render() {
-      return (
-        <div className="App">
-          <div className="container">
-            <AddGoal addGoal={this.addGoal} />
-            <Goals goals={this.state.goals} markComplete={this.markComplete} delGoal={this.delGoal}/>
-          </div>  
-        </div>
-      );
-    }
-  }
-  
-  export default (home)
 
+        const handleClickOpen = () => {
+            this.setState({ isOpen: true });
+        };
 
+        const handleClose = () => {
+            this.setState({ isOpen: false });
+        };
 
-//list of items to be diplayed , pull from back end here
-/* const goals = [
-    { id: 1, description: "work out", image: "https://cdn3.iconfinder.com/data/icons/vacation-4/32/vacation_18-512.png"}, 
-    { id: 2, description: "read", image: "https://cdn3.iconfinder.com/data/icons/book-shop-category-ouline/512/Book_Shop_Category-06-512.png"},
-    { id: 3, description: "work on sprint", image: "https://cdn0.iconfinder.com/data/icons/google-material-design-3-0/48/ic_trending_up_48px-512.png"}]//default
+        const handleSubmit = () => {
+            //post to back end
+            this.setState({ isOpen: false });
+        };
 
+        return (
+            //Main div box which will contain all the entire page, needed because must have one parent div for everything
+            <div className='home'>
+                <React.Fragment>
+                    <CssBaseline />
+                    <MyBar page="My Goals" />
+                    <main>
+                        {/* goal unit */}
 
-
-
-
-////
-/*
-export default function Album() {
-    const classes = useStyles();
-
-    return (
-        <React.Fragment>
-            <CssBaseline />
-            <MyBar page="My Goals" />
-            <main>
-                {/* goal unit *
- ///}
-/*
-                <div className={classes.heroContent}>
-                    <Container maxWidth="sm">
-                        <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                            Habitact
+                        <div >
+                            <Container maxWidth="sm">
+                                <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+                                    Habitact
                         </Typography>
-                        <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                            Its a new day, you got this !
-                        </Typography>
-                        <div className={classes.heroButtons}>
-                            <Grid container spacing={2} justify="center">
-                                <Grid item>
-                                    <Button variant="contained" color="primary">
-                                        Create new goal
-                                    </Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button variant="outlined" color="primary">
-                                        View Stats
-                                    </Button>
-                                </Grid>
-                            </Grid>
+                                <Typography component="h5" variant="h5" align="center" color="textPrimary" gutterBottom>
+                                    {this.state.today}
+                                </Typography>
+                                
+                                <div >
+                                    <Grid container spacing={2} justify="center">
+                                        <Grid item>
+                                            <Button variant="contained" color="primary" onClick={handleClickOpen}>
+                                                Create new goal
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Dialog open={this.state.isOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
+                                        <DialogTitle id="form-dialog-title">Create a Goal</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+                                                Enter a goal description and the start and end date.
+                                             </DialogContentText>
+
+                                            <TextField
+                                                autoFocus
+                                                margin="dense"
+                                                id="title"
+                                                label="title"
+                                                type="string"
+                                                fullWidth
+                                            />
+                                            Start
+                                            <TextField
+                                                autoFocus
+                                                margin="dense"
+                                                id="start"
+                                                type="date"
+                                                fullWidth
+                                            />
+                                            End
+                                            <TextField
+                                                autoFocus
+                                                margin="dense"
+                                                id="end"
+                                                type="date"
+                                                fullWidth
+                                            />
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={handleClose} color="primary">
+                                                Cancel
+                                            </Button>
+                                            <Button onClick={handleSubmit} color="primary">
+                                                Save
+                                             </Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </div>
+                            </Container>
                         </div>
-                    </Container>
-                </div>
-                <Container className={classes.cardGrid} maxWidth="md">
-                    {/* End goal unit */
-//}
- /*
-                    <Grid container spacing={4}>
-                        {goals.map((goal) => (
-                            <Grid item key={goal.id} xs={12} sm={6} md={4}>
-                                <Card className={classes.card}>
-                                    <CardMedia
-                                        className={classes.cardMedia}
-                                        image = {goal.image}
-                                        title="Goal Icon description"
-                                    />
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Goal #{goal.id}
-                                        </Typography>
-                                        <Typography>
-                                            Description: {goal.description}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button size="small" color="primary">
-                                            Complete
-                                        </Button>
-                                        <Button size="small" color="primary">
-                                            Edit
-                                        </Button>
-                                    </CardActions>
-                                </Card>
+                        <Container maxWidth="md">
+                            {/* End goal unit */
+                            }
+
+                            <Grid container spacing={4}>
+                                {this.state.goals.filter(g => g!==null).map((goal, index) => (
+                                    <Grid item key={goal.id} xs={12} sm={6} md={4}>
+                                        <Card >
+                                            <CardMedia
+                                                
+                                                image="https://source.unsplash.com/random"
+                                                title="Image title"
+                                            />
+                                            <CardContent >
+                                                <Typography gutterBottom variant="h5" component="h2">
+                                                    #{index + 1} {goal.title}
+                                                </Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Button size="small" color="primary">
+                                                    Complete
+                                                </Button>
+                                                <Button size="small" color="primary">
+                                                    Edit
+                                                </Button>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                ))}
                             </Grid>
-                        ))}
-                    </Grid>
-                </Container>
-            </main>
-            {/* Footer */
-//}
-/*
-            <footer className={classes.footer}>
-                <Typography variant="h6" align="center" gutterBottom>
-                    Habitack
-        </Typography>
-                <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-                    Your limits are only how big you can dream!
-                </Typography>
-                <Copyright />
-            </footer>
-            {/* End footer */
-//}
-/*
-//        </React.Fragment>
-//    );}
-//*/
+                        </Container>
+                    </main>
+
+
+                    <BottomNav/>
+                </React.Fragment>
+            </div>
+        )
+    }
+}
+
+
+
+export default home
