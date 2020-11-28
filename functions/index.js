@@ -19,6 +19,8 @@ const {
   updateEmail,
   updatePass,
   changeDisplay,
+  addProfilePic,
+  getProfilePic
 } = require("./APIs/users")
 
 // Goals
@@ -39,6 +41,8 @@ app.put("/updateUser", auth, updateName)
 app.put("/updateEmail", updateEmail)
 app.put("/updatePass", updatePass)
 app.put("/changeDisplay", changeDisplay)
+app.post("/profile", auth, addProfilePic)
+app.get("/profilePic", auth, getProfilePic)
 
 //instantiates credentials
 const transporter = nodemailer.createTransport({

@@ -11,6 +11,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button/Button'
+import Profile from './profilePic'
 
 
 const styles = (theme) => ({
@@ -27,14 +28,6 @@ const styles = (theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
     flexBasis: '85%',
-  },
-  large: {
-    width: theme.spacing(20),
-    height: theme.spacing(20),
-    marginTop: '15px',
-    marginBottom: '15px',
-    marginLeft: 'auto',
-    marginRight: 'auto',
   },
   botNav: {
     position: 'fixed',
@@ -185,7 +178,7 @@ class EditAccount extends React.Component {
 			})
 			.catch((error) => {
 				if(error) {
-					this.props.history.push('/')
+					//this.props.history.push('/')
 				}
 				console.log(error);
       }); 
@@ -199,10 +192,8 @@ class EditAccount extends React.Component {
       <MyBar page = {`Edit Account ${this.state.firstName} ${this.state.lastName}`}/>
 
       <Container maxWidth='md' >
-        <div>
-          <Avatar  className = {classes.large} styles={{ alignItems: 'center', width: '120px',height: '120px', marginTop: '15px',marginBottom: '15px',
-    marginLeft: 'auto',
-    marginRight: 'auto', }} />
+        <div >
+          <Profile />
         </div>
         <Accordion classes={{ root: classes.summary }} expanded={this.state.expanded === 'panel1'} onChange={this.handleChange('panel1')}>
                 <AccordionSummary
