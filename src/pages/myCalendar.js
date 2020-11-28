@@ -39,8 +39,10 @@ class myCalendar extends Component {
                 
             })
             .catch((err) => {
-                console.log(err)
+                if(err.response.status === 403)
                 this.props.history.push('/')
+                else
+                console.log(err)
             })
     }
 

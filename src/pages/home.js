@@ -143,8 +143,9 @@ class home extends Component {
 
         axios
             .post("/goal", goal)
-            .then((res) => {
-                console.log(res)
+            .then(() => {
+                console.log("here")
+                window.location.reload();
             })
             .catch((err) => {
                 console.log(err)
@@ -183,16 +184,10 @@ class home extends Component {
 					this.props.history.push('/login');
 				}
 				console.log(error);
-				this.setState({
-					uiLoading: false,
-					imageError: 'Error in posting the data'
-				});
-            });
-            
+            })
             this.setState({
                 imageUpload: 'n/a'
             })
-
     }
 
     render() {
