@@ -4,7 +4,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Typography from '@material-ui/core/Typography';
 import { IconButton } from '@material-ui/core';
-
+import LogOut from './logoutButton'
 
 export default class MyBar extends React.Component {
     constructor(props){
@@ -15,7 +15,7 @@ export default class MyBar extends React.Component {
         {document.title = 'Habitact'}
         return (
             <AppBar className='app' position="relative">
-                <Toolbar >
+                <Toolbar style = {{display: 'flex', justifyContent: 'space-between'}}>
                     <IconButton href='/editAccount' color='inherit'>
                         <AccountCircleIcon className='icon' />
                     </IconButton>
@@ -23,6 +23,7 @@ export default class MyBar extends React.Component {
                     <Typography variant="h6" color="inherit" noWrap>
                         {this.props.page}
                     </Typography>
+                    <LogOut />
                 </Toolbar >
             </AppBar>
         )
