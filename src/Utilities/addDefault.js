@@ -59,9 +59,9 @@ export default function AddDefault() {
     
     return (
         <div >
-                                    <Grid container spacing={2} justify="center">
+                                    <Grid style = {{width: '200px'}}container spacing={2} justify="center">
                                         <Grid item>
-                                            <Button style = {{width: '210px'}} variant="contained" color="primary" onClick={handleClickOpen}>
+                                            <Button style = {{width: '200px'}} variant="contained" color="primary" onClick={handleClickOpen}>
                                                 Add Default Goal
                                             </Button>
                                         </Grid>

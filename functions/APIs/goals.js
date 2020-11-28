@@ -16,7 +16,8 @@ exports.getAllGoals = (request, response) => {
           title: doc.data().title,
           start: doc.data().start,
           end: doc.data().end,
-          completion: doc.data().completion
+          completion: doc.data().completion,
+          imageUrl: doc.data().imageUrl
         })
       })
       return response.json(goals)
@@ -59,6 +60,7 @@ exports.addGoal = (request, response) => {
     title: request.body.title,
     start: request.body.start,
     end: request.body.end,
+    imageUrl: "",
     completion
   }
   db
