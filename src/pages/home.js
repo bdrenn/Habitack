@@ -54,18 +54,18 @@ class home extends Component {
             imageUpload: 'n/a'
         }
         this.setDate = this.setDate.bind(this)
-        this.filterGoals=this.filterGoals.bind(this)
-        this.isToday=this.isToday.bind(this)
-        this.handleChange=this.handleChange.bind(this)
-        this.handleClickOpen=this.handleClickOpen.bind(this)
-        this.handleSubmit=this.handleSubmit.bind(this)
+        this.filterGoals = this.filterGoals.bind(this)
+        this.isToday = this.isToday.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleClickOpen = this.handleClickOpen.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
         this.getPic = this.getPic.bind(this)
         this.handlePicSubmit = this.handlePicSubmit.bind(this)
 
     }
 
     componentDidMount() {
-        
+
         authMiddleWare(this.props.history);
         const authToken = localStorage.getItem('AuthToken');
         axios.defaults.headers.common = { Authorization: `${authToken}` };
@@ -75,7 +75,7 @@ class home extends Component {
                 this.setState({
                     goalsAPI: response.data,
                 })
-                
+
                 console.log("mount :", this.state.goalsAPI)
                 this.setDate()
                 this.filterGoals()
@@ -84,7 +84,7 @@ class home extends Component {
             .catch((err) => {
                 console.log(err)
             })
-            
+
 
 
     }
@@ -114,22 +114,22 @@ class home extends Component {
             return null
     }
 
-    handleChange(event){
+    handleChange(event) {
         const name = event.target.name;
         console.log(event.target.value)
         this.setState({
-          [name]: event.target.value,
+            [name]: event.target.value,
         });
     }
-    handleClickOpen(){
+    handleClickOpen() {
         this.setState({ isOpen: true });
     };
 
-    handleClose(){
+    handleClose() {
         this.setState({ isOpen: false });
     };
 
-    handleSubmit(e){
+    handleSubmit(e) {
         //post to back end
         e.preventDefault();
         let startSplit = this.state.start.split('-')
@@ -153,46 +153,46 @@ class home extends Component {
         this.setState({ isOpen: false });
     };
 
-    getPic(event){
+    getPic(event) {
         this.setState({
             imageUpload: event.target.files[0]
         })
         console.log(this.imageUpload)
     }
-    handlePicSubmit(e){
+    handlePicSubmit(e) {
         e.preventDefault()
         let id = e.target.name
         console.log(id)
-        if(this.imageUpload === 'n/a'){
+        if (this.imageUpload === 'n/a') {
             return;
         }
         let form_data = new FormData();
-		form_data.append('image', this.state.imageUpload);
-		form_data.append('content', this.state.content);
-		
-		axios
-			.post(`/addGoalPic/${id}`, form_data, {
-				headers: {
-					'content-type': 'multipart/form-data'
-				}
-			})
-			.then(() => {
-				window.location.reload();
-			})
-			.catch((error) => {
-				if (error.response.status === 403) {
-					this.props.history.push('/login');
-				}
-				console.log(error);
+        form_data.append('image', this.state.imageUpload);
+        form_data.append('content', this.state.content);
+
+        axios
+            .post(`/addGoalPic/${id}`, form_data, {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
             })
-            this.setState({
-                imageUpload: 'n/a'
+            .then(() => {
+                window.location.reload();
             })
+            .catch((error) => {
+                if (error.response.status === 403) {
+                    this.props.history.push('/login');
+                }
+                console.log(error);
+            })
+        this.setState({
+            imageUpload: 'n/a'
+        })
     }
 
     render() {
 
-        
+
 
         return (
             //Main div box which will contain all the entire page, needed because must have one parent div for everything
@@ -282,10 +282,10 @@ class home extends Component {
                                     <Grid item key={goal.id} xs={12} sm={6} md={4}>
                                         <Card >
                                             <CardMedia
-                                                component = "img"
-                                                alt = "add pic for goal"
-                                                height = "140"
-                                                image= {goal.imageUrl}
+                                                component="img"
+                                                alt="add pic for goal"
+                                                height="140"
+                                                image={goal.imageUrl}
                                                 title="Image title"
                                             />
                                             <CardContent >
@@ -300,9 +300,9 @@ class home extends Component {
                                                 <Button size="small" color="primary">
                                                     Edit
                                                 </Button>
-                                                <form name={goal.title} onSubmit = {this.handlePicSubmit} >
-                                                    <Button type = "submit" size ="small" color ="primary">Submit</Button>
-                                                    <input type="file" onChange = {this.getPic} />
+                                                <form name={goal.title} onSubmit={this.handlePicSubmit} >
+                                                    <Button type="submit" size="small" color="primary">Submit</Button>
+                                                    <input type="file" onChange={this.getPic} />
                                                 </form>
                                             </CardActions>
                                         </Card>
