@@ -13,7 +13,7 @@ export default function LogoutButton () {
     
     return (
         <div>
-        <Button onClick = {handleLogOut}>Log Out</Button>
+        <Button variant="contained" color="secondary" onClick = {handleLogOut}>Log Out</Button>
         </div>
     )
 }
