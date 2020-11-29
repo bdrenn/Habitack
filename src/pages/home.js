@@ -29,7 +29,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import DefautlGoal from '../Utilities/addDefault'
+import DefautlGoal from '../Utilities/addDefault';
+import defaultIMG from "../img/defaultIMG.png";
+
 
 
 import Goals from '../Utilities/Goals';
@@ -61,6 +63,7 @@ class home extends Component {
         this.handleSubmit=this.handleSubmit.bind(this)
         this.getPic = this.getPic.bind(this)
         this.handlePicSubmit = this.handlePicSubmit.bind(this)
+        this.handleClose = this.handleClose.bind(this)
 
     }
 
@@ -82,7 +85,10 @@ class home extends Component {
 
             })
             .catch((err) => {
-                console.log(err)
+                if (err.response.status == 403)
+                    this.props.history.push('/')
+                else
+                    console.log(err)
             })
             
 
@@ -108,8 +114,11 @@ class home extends Component {
     }
 
     isToday(goal) {
-        if (this.state.today < goal.end && this.state.today > goal.start)
+        if (this.state.today < goal.end && this.state.today > goal.start) {
+            if (goal.imageUrl == "")
+                goal.imageUrl = defaultIMG;
             return goal
+        }
         else
             return null
     }
