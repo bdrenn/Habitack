@@ -61,7 +61,7 @@ class home extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
         this.getPic = this.getPic.bind(this)
         this.handlePicSubmit = this.handlePicSubmit.bind(this)
-
+        this.handleCompleteGoal = this.handleCompleteGoal.bind(this)
     }
 
     componentDidMount() {
@@ -128,6 +128,18 @@ class home extends Component {
     handleClose() {
         this.setState({ isOpen: false });
     };
+
+    handleCompleteGoal(goalId) {
+        console.log(`hello ${goalId}`)
+        axios
+            .put(`/complete/${goalId}`)
+            .then(() => {
+                window.location.reload();
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
 
     handleSubmit(e) {
         //post to back end
@@ -294,7 +306,7 @@ class home extends Component {
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
-                                                <Button size="small" color="primary">
+                                                <Button onClick={() => this.handleCompleteGoal(goal.title)} size="small" color="primary">
                                                     Complete
                                                 </Button>
                                                 <Button size="small" color="primary">
