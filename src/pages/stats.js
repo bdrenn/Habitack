@@ -98,8 +98,10 @@ class Stats extends Component {
         })
       })
       .catch((err) => {
-        console.log(err)
-        this.props.history.push('/')
+          if (err.response.status == 403)
+              this.props.history.push('/')
+          else
+              console.log(err)
       })
   }
 
@@ -111,7 +113,7 @@ class Stats extends Component {
           total_goals={this.getPercentageGoalsIncomplete()}
           goals_completed={this.getPercentageGoalsCompleted()}
         />
-        <BottomNav />
+        <BottomNav state={0}/>
       </div>
     )
   }
