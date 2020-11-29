@@ -5,18 +5,15 @@ import HomeIcon from '@material-ui/icons/Home'
 import { CalendarToday } from '@material-ui/icons';
 import ShowChart from '@material-ui/icons/ShowChart'
 
-export default function MyBotNav (props) {
-    /* TODO:
-        - Currently the bottom-nav is re-rendered everytime a page is clicked. 
-        Ideally, the bottom nav should be rendered once as a component, and everytime a page 
-        is clicked the selected icon will update.
-        - Since we re-render every time, the state needs to be updated manually through a prop.
-    */
-    const [value, setValue] = React.useState(props.state);
+export default function MyBotNav () {
+    const [value, setValue] = React.useState(0);
     return (
         <div className='bot-nav-container'>
                     <BottomNavigation
                         value={value}
+                        onChange={(event, newValue) => {
+                            setValue(newValue);
+                        }}
                         showLabels
                         className='botNav'
                     >

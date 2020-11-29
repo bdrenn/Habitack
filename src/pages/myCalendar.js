@@ -138,7 +138,7 @@ class myCalendar extends Component {
                                                 
                     </div>
                     {/* Bottom navigation module */}
-                    <BottomNav state={2} />
+                    <BottomNav />
                 </Container>
             </div>
         )

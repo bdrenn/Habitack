@@ -111,7 +111,7 @@ class Stats extends Component {
           total_goals={this.getPercentageGoalsIncomplete()}
           goals_completed={this.getPercentageGoalsCompleted()}
         />
-        <BottomNav state={0}/>
+        <BottomNav />
       </div>
     )
   }
