@@ -322,7 +322,7 @@ class home extends Component {
                     </main>
 
 
-                    <BottomNav />
+                    <BottomNav state={1} />
                 </React.Fragment>
             </div>
         )
