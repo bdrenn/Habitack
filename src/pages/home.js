@@ -206,7 +206,7 @@ class home extends Component {
                         <div >
                             <Container maxWidth="sm">
                                 <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                                    Habitact
+                                    Habitack
                         </Typography>
                                 <Typography component="h5" variant="h5" align="center" color="textPrimary" gutterBottom>
                                     {this.state.today}
