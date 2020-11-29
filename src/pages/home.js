@@ -129,10 +129,17 @@ class home extends Component {
         this.setState({ isOpen: false });
     };
 
-    handleCompleteGoal(goalId) {
-        console.log(`hello ${goalId}`)
+    handleCompleteGoal(index) {
+        const start = new Date(this.state.goals[index].start)
+        const now = new Date()
+        const timeDiff = now.getTime() - start.getTime()
+        let today_index = Math.floor(Math.abs(timeDiff / (1000 * 3600 * 24)))
+
+        const completion = this.state.goals[index].completion
+        completion[today_index] = true
+        console.log(completion)
         axios
-            .put(`/complete/${goalId}`)
+            .put(`/complete/${this.state.goals[index].title}`, {completion: completion})
             .then(() => {
                 window.location.reload();
             })
@@ -306,7 +313,7 @@ class home extends Component {
                                                 </Typography>
                                             </CardContent>
                                             <CardActions>
-                                                <Button onClick={() => this.handleCompleteGoal(goal.title)} size="small" color="primary">
+                                                <Button onClick={() => this.handleCompleteGoal(index)} size="small" color="primary">
                                                     Complete
                                                 </Button>
                                                 <Button size="small" color="primary">
