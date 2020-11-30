@@ -118,13 +118,18 @@ class home extends Component {
     }
 
     isToday(goal) {
-        if (this.state.today < goal.end && this.state.today > goal.start) {
+        var today = new Date(this.state.today)
+        var start = new Date(goal.start)
+        var end = new Date(goal.end)
+        if (today <= end && today >= start) {
             if (goal.imageUrl == "")
                 goal.imageUrl = defaultIMG;
             return goal
         }
-        else
+        else {
+            console.log("false -", today, start, end)
             return null
+        }
     }
 
     handleChange(event) {
@@ -345,7 +350,7 @@ class home extends Component {
                     </main>
 
 
-                    <BottomNav state={1} />
+                    <BottomNav state={1}/>
                 </React.Fragment>
             </div>
         )
