@@ -11,6 +11,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button/Button'
+import Profile from './profilePic'
 
 
 const styles = (theme) => ({
@@ -27,14 +28,6 @@ const styles = (theme) => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
     flexBasis: '85%',
-  },
-  large: {
-    width: theme.spacing(20),
-    height: theme.spacing(20),
-    marginTop: '15px',
-    marginBottom: '15px',
-    marginLeft: 'auto',
-    marginRight: 'auto',
   },
   botNav: {
     position: 'fixed',
@@ -107,7 +100,7 @@ class EditAccount extends React.Component {
      }
 
      console.log(account)
-    axios.put("api/updateUser", account)
+    axios.put("/updateUser", account)
     .then((respone) => {
       console.log(respone)
       this.props.history.push('/EditAccount')
@@ -126,7 +119,7 @@ class EditAccount extends React.Component {
       userName: this.state.userName
      }
      console.log(account)
-    axios.put("api/updateEmail", account)
+    axios.put("/updateEmail", account)
     .then((respone) => {
       console.log(respone)
       this.props.history.push('/EditAccount')
@@ -143,7 +136,7 @@ class EditAccount extends React.Component {
       console.log("Passwords do not match")
     }
     else{
-      axios.put("/api/updatePass", account)
+      axios.put("/updatePass", account)
       .then((response) => {
         console.log("success changing password")
       })
@@ -156,7 +149,7 @@ class EditAccount extends React.Component {
   updateDisplayName= (e) => {
     e.preventDefault();
     let account = {displayName: this.state.displayName, username: this.state.userName}
-    axios.put("/api/changeDisplay", account)
+    axios.put("/changeDisplay", account)
     .then((response) => {
       console.log("success changing display name")
     })
@@ -167,14 +160,13 @@ class EditAccount extends React.Component {
   }
 
   componentDidMount = () => {
-    document.title = 'Edit User Account'
-    document.body.style.backgroundColor = "#5280e9";
+    document.body.style.backgroundColor = "#F9F9F9";
     
     authMiddleWare(this.props.history);
 		const authToken = localStorage.getItem('AuthToken');
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
 		axios
-			.get('api/getUser')
+			.get('/getUser')
 			.then((response) => {
         this.setState({
           firstName: response.data.userCredentials.firstName,
@@ -186,7 +178,7 @@ class EditAccount extends React.Component {
 			})
 			.catch((error) => {
 				if(error) {
-					this.props.history.push('/')
+					//this.props.history.push('/')
 				}
 				console.log(error);
       }); 
@@ -197,13 +189,11 @@ class EditAccount extends React.Component {
   return (
     <div>
 
-      <MyBar page = "Edit Account"/>
+      <MyBar page = {`Edit Account ${this.state.firstName} ${this.state.lastName}`}/>
 
       <Container maxWidth='md' >
-        <div>
-          <Avatar  className = {classes.large} styles={{ alignItems: 'center', width: '120px',height: '120px', marginTop: '15px',marginBottom: '15px',
-    marginLeft: 'auto',
-    marginRight: 'auto', }} />
+        <div >
+          <Profile />
         </div>
         <Accordion classes={{ root: classes.summary }} expanded={this.state.expanded === 'panel1'} onChange={this.handleChange('panel1')}>
                 <AccordionSummary

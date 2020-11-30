@@ -8,6 +8,7 @@ const firebase = require("firebase")
 firebase.initializeApp(config)
 
 const { validateLoginData, validateSignUpData } = require("../util/validators")
+const crypto = require('crypto')
 
 // Login
 exports.loginUser = (request, response) => {
@@ -83,7 +84,7 @@ exports.signUpUser = (request, response) => {
         createdAt: new Date().toISOString(),
         userId,
       }
-      return db.doc(`/users/${newUser.username}`).set(userCredentials)
+      return db.collection("users").doc(`${userCredentials.username}`).set(userCredentials)
     })
     .then(() => {
       return response.status(201).json({ token })
@@ -144,7 +145,7 @@ exports.updateEmail = (request, response) => {
       })
       var user = firebase.auth().currentUser;
       console.log(user.email)
-      firebase.auth().currentUser.updateEmail(request.body.email)
+      return firebase.auth().currentUser.updateEmail(request.body.email)
     .then(() => {
       response.json({ message: "success using auth"} )
     })
@@ -154,7 +155,7 @@ exports.updateEmail = (request, response) => {
 }
 
 exports.updatePass = (request, response) => {
-      firebase.auth().currentUser.updatePassword(request.body.passOne)
+      return firebase.auth().currentUser.updatePassword(request.body.passOne)
     .then(() => {
       response.json({ message: "success using auth"} )
     })
@@ -164,7 +165,7 @@ exports.updatePass = (request, response) => {
 }
 
 exports.changeDisplay = (request, response) => {
-  let document = db.collection('users').doc(`${request.body.username}`);
+  let document = db.collection('users').doc(`${request.body.userName}`);
     return document.update({
         displayname: request.body.displayName,
     })
@@ -174,5 +175,79 @@ exports.changeDisplay = (request, response) => {
   .catch((err) => {
       console.error("Error updating name: ", error);
       });
+}
+
+
+exports.addProfilePic = (request, response) => {
+  const BusBoy = require('busboy');
+	const path = require('path');
+	const os = require('os');
+	const fs = require('fs');
+  const busboy = new BusBoy({ headers: request.headers });
+  const id = crypto.randomBytes(8).toString('hex');
   
+  //let myCollection = db.doc(`/goals/${request.user.username}/${request.body.title}`)
+  
+
+	let imageFileName;
+  let imageToBeUploaded = {};
+  //check if it is a image
+	busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+		if (mimetype !== 'image/png' && mimetype !== 'image/jpeg') {
+			return response.status(400).json({ error: 'Wrong file type submited' });
+    }
+    //get the extension .jpg etc
+    const imageExtension = filename.split('.')[filename.split('.').length - 1];
+    
+        //filename is username.extension
+        imageFileName = `${id}_${request.user.username}_profile.${imageExtension}`;
+    const filePath = path.join(os.tmpdir(), imageFileName);
+    
+		imageToBeUploaded = { filePath, mimetype };
+		file.pipe(fs.createWriteStream(filePath));
+    });
+
+    busboy.on('field', function(fieldname, val) {    
+      request.body[fieldname] = val;
+});
+
+	busboy.on('finish', () => {
+		admin
+			.storage()
+			.bucket()
+			.upload(imageToBeUploaded.filePath, {
+				resumable: false,
+				metadata: {
+					metadata: {
+						contentType: imageToBeUploaded.mimetype
+					}
+				}
+			})
+			.then(() => {
+        
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+
+        return db.collection("users").doc(`${request.user.username}`).set({imageUrl}, {merge: true});
+			})
+			.then(() => {
+				return response.json({ message: 'Image uploaded successfully' });
+			})
+			.catch((error) => {
+				console.error(error);
+				return response.status(500).json({ error: error.code });
+			});
+	});
+	busboy.end(request.rawBody);
+};
+
+exports.getProfilePic = (request, response) => {
+  let userPic = {}
+  db.collection("users").doc(`${request.user.username}`).get()
+  .then((doc) => {
+    userPic.pic = doc.data().imageUrl
+    return response.json(userPic)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
 }
