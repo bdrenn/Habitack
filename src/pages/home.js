@@ -334,7 +334,6 @@ class home extends Component {
                                             <CardMedia
                                                 component="img"
                                                 alt="add pic for goal"
-                                                height="140"
                                                 image={goal.imageUrl}
                                                 title="Image title"
                                             />
