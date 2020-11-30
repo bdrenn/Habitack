@@ -13,7 +13,7 @@ export default class MyBar extends React.Component {
     }
     render() {
         {document.title = 'Habitact'}
-        let renderButtons = this.props.renderButtons || true;
+        let renderButtons = this.props.renderButtons || "true";
         if(renderButtons === "true")
         {
         return (
