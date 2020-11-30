@@ -31,7 +31,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DefautlGoal from '../Utilities/addDefault';
 import defaultIMG from "../img/defaultIMG.png";
-
+import completeIMG from "../img/complete.png";
 
 
 import Goals from '../Utilities/Goals';
@@ -121,15 +121,28 @@ class home extends Component {
         var today = new Date(this.state.today)
         var start = new Date(goal.start)
         var end = new Date(goal.end)
+        var index = this.getIndex(start, today)
         if (today <= end && today >= start) {
-            if (goal.imageUrl == "")
+            if (goal.imageUrl == "" && goal.completion[index] != true) {
                 goal.imageUrl = defaultIMG;
+                console.log("use default")
+            }
+            else if (goal.completion[index] == true) {
+                goal.imageUrl = completeIMG;
+                console.log(goal.title, "is complete");
+            }
             return goal
         }
         else {
             console.log("false -", today, start, end)
             return null
         }
+        
+    }
+
+    getIndex(start, end) {
+        console.log("index is-", Math.round((end - start) / (1000 * 60 * 60 * 24)))
+        return Math.round((end - start) /( 1000 * 60 * 60 * 24));
     }
 
     handleChange(event) {
