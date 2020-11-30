@@ -13,6 +13,9 @@ export default class MyBar extends React.Component {
     }
     render() {
         {document.title = 'Habitact'}
+        let renderButtons = this.props.renderButtons || true;
+        if(renderButtons === "true")
+        {
         return (
             <AppBar className='app' position="relative">
                 <Toolbar style = {{display: 'flex', justifyContent: 'space-between'}}>
@@ -27,6 +30,22 @@ export default class MyBar extends React.Component {
                 </Toolbar >
             </AppBar>
         )
+        }
+        else{
+            if(renderButtons === "false")
+            {
+            return (
+                <AppBar className='app' position="relative">
+                <Toolbar style = {{display: 'flex', justifyContent: 'center'}}>
+                    {/*Typogragpy is imported form material-ui can have different types of text if you change the variant and color*/}
+                    <Typography variant="h6" color="inherit" noWrap>
+                        {this.props.page}
+                    </Typography>
+                </Toolbar >
+            </AppBar>
+            )
+            }
+        }
     }
 }
 

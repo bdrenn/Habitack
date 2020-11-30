@@ -103,7 +103,7 @@ class login extends Component {
     const { errors, loading } = this.state
     return (
       <div>
-        <MyBar page="Login" />
+        <MyBar renderButtons = "false" page="Login" />
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className={classes.paper}>
