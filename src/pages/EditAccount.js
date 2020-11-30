@@ -176,11 +176,10 @@ class EditAccount extends React.Component {
           displayName: response.data.userCredentials.displayname
         });
 			})
-			.catch((error) => {
-				if(error) {
-					//this.props.history.push('/')
-				}
-				console.log(error);
+			.catch((err) => {
+				if(err.response.status === 403)
+          this.props.history.push('/')
+			  console.log(err);
       }); 
     }
   

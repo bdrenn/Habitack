@@ -89,6 +89,7 @@ class home extends Component {
 
             })
             .catch((err) => {
+
                 if (err.response.status == 403)
                     this.props.history.push('/')
                 else

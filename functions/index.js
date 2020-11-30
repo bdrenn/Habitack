@@ -5,6 +5,7 @@ const express = require("express")
 const app = express()
 const nodemailer = require("nodemailer")
 const auth = require("./util/auth")
+require('dotenv').config();
 
 const cors = require("cors")
 app.use(cors())
@@ -48,8 +49,8 @@ app.get("/profilePic", auth, getProfilePic)
 const transporter = nodemailer.createTransport({
   service: "Gmail",
   auth: {
-    user: "habitack2020@gmail.com", // generated ethereal user
-    pass: "csulb2020" // generated ethereal password
+    user: process.env.EMAIL, // generated ethereal user
+    pass: process.env.PASSWORD // generated ethereal password
   },
 });
 
@@ -93,8 +94,8 @@ function mail(firstName, lastName, email) {
             </ul>
          </ol>`
   })
-  .then(r => r)
-  .catch(e => e)
+  .then(r => console.log(r))
+  .catch(e => console.log(e))
 }
 
 
