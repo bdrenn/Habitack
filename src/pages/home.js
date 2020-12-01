@@ -99,9 +99,9 @@ class home extends Component {
             .catch((err) => {
 
                 //if (err.response.status == 403)
-                    //this.props.history.push('/')
-               // else
-                    console.log(err)
+                //this.props.history.push('/')
+                // else
+                console.log(err)
             })
 
 
@@ -257,44 +257,37 @@ class home extends Component {
         })
     }
 
-    handleDelete (index) {
+    handleDelete(index) {
         let id = this.state.goals[index].title
         console.log(id)
         this.setState(prevState => ({
             deleteArr: [...prevState.deleteArr, id]
         }))
+        document.getElementById(`${id}`).style.color = "red"
 
-        /*axios
-        .delete(`/goal/${id}`)
-        .then((r) => {
-            console.log(r)
-        })
-        .catch((e) => {
-            console.log(e)
-        })
-        */
+
     }
 
-    handleDeleteSave () {
+    handleDeleteSave() {
         this.state.deleteArr.map(goal => {
             axios
-            .delete(`/goal/${goal}`)
-            .then((res) => {
-                console.log(res)
-                window.location.reload();
+                .delete(`/goal/${goal}`)
+                .then((res) => {
+                    console.log(res)
+                    window.location.reload();
 
-            })
-            .catch((err) => {
-                console.log(err)
-                
-            })
+                })
+                .catch((err) => {
+                    console.log(err)
+
+                })
         })
         this.setState({
             deleteOpen: false
         })
 
     }
-    componentDidUpdate(){
+    componentDidUpdate() {
         console.log(this.state.deleteArr)
     }
 
@@ -392,32 +385,37 @@ class home extends Component {
                                         </Dialog>
                                         <Dialog open={this.state.deleteOpen} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                                             <DialogContent >
-                                                <div style = {{flexGrow: '1', maxWidth: '752'}}>
-                                                <Grid container spacing = {2}  >
-                                                    <Grid item xs>
-                                                        <List>
-                                                        {this.state.goals.filter(g => g !== null).map((goal, index) =>(
-                                                            <ListItem >
-                                                            <ListItemText
-                                                                primary={goal.title}
-                                                            />
-                                                            <ListItemSecondaryAction>
-                                                                <IconButton  edge="end" aria-label="delete">
-                                                                    <DeleteIcon  onClick ={() => {this.handleDelete(index)}}/>
-                                                                 </IconButton>
-                                                            </ListItemSecondaryAction>
-                                                            </ListItem>
-                                                            ))}
-                                                      </List>
-                                                </Grid>
-                                                </Grid>
+                                            <DialogContentText>
+                                                                                Press save to delete goals highlighted red, press cancel to keep goals
+                                                                             </DialogContentText>
+                                                <div style={{ flexGrow: '1', maxWidth: '752' }}>
+                                                    <Grid container spacing={2}  >
+                                                        <Grid item xs>
+                                                            <List>
+                                                                {this.state.goals.filter(g => g !== null).map((goal, index) => (
+                                                                    <div id={`${goal.title}`}>
+                                                                        <ListItem >
+                                                                            <ListItemText
+                                                                                primary={goal.title}
+                                                                            />
+                                                                            <ListItemSecondaryAction>
+                                                                                <IconButton edge="end" aria-label="delete">
+                                                                                    <DeleteIcon onClick={() => { this.handleDelete(index) }} />
+                                                                                </IconButton>
+                                                                            </ListItemSecondaryAction>
+                                                                        </ListItem>
+                                                                    </div>
+                                                                ))}
+                                                            </List>
+                                                        </Grid>
+                                                    </Grid>
                                                 </div>
                                             </DialogContent>
                                             <DialogActions>
                                                 <Button onClick={() => { this.setState({ deleteOpen: false }) }} color="primary">
                                                     Cancel
                                             </Button>
-                                                <Button onClick = {this.handleDeleteSave} color="primary">
+                                                <Button onClick={this.handleDeleteSave} color="primary">
                                                     Save
                                              </Button>
                                             </DialogActions>
