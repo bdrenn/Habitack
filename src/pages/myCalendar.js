@@ -39,10 +39,10 @@ class myCalendar extends Component {
                 
             })
             .catch((err) => {
-                if(err.response.status === 403)
-                this.props.history.push('/')
+                if (err.response.status == 403)
+                    this.props.history.push('/')
                 else
-                console.log(err)
+                    console.log(err)
             })
     }
 
@@ -138,7 +138,7 @@ class myCalendar extends Component {
                                                 
                     </div>
                     {/* Bottom navigation module */}
-                    <BottomNav />
+                    <BottomNav state={2} />
                 </Container>
             </div>
         )

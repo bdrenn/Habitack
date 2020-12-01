@@ -53,7 +53,7 @@ exports.addGoal = (request, response) => {
   let dayDiff = Math.abs(timeDiff / (1000 * 3600 * 24));
   
   for ( i = 0; i < dayDiff; i++) {
-    completion.push("");
+    completion.push(false);
   }
 
   const newGoal = {
