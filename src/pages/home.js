@@ -54,18 +54,18 @@ class home extends Component {
             imageUpload: 'n/a'
         }
         this.setDate = this.setDate.bind(this)
-        this.filterGoals=this.filterGoals.bind(this)
-        this.isToday=this.isToday.bind(this)
-        this.handleChange=this.handleChange.bind(this)
-        this.handleClickOpen=this.handleClickOpen.bind(this)
-        this.handleSubmit=this.handleSubmit.bind(this)
+        this.filterGoals = this.filterGoals.bind(this)
+        this.isToday = this.isToday.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleClickOpen = this.handleClickOpen.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
         this.getPic = this.getPic.bind(this)
         this.handlePicSubmit = this.handlePicSubmit.bind(this)
 
     }
 
     componentDidMount() {
-        
+
         authMiddleWare(this.props.history);
         const authToken = localStorage.getItem('AuthToken');
         axios.defaults.headers.common = { Authorization: `${authToken}` };
@@ -75,18 +75,18 @@ class home extends Component {
                 this.setState({
                     goalsAPI: response.data,
                 })
-                
+
                 console.log("mount :", this.state.goalsAPI)
                 this.setDate()
                 this.filterGoals()
 
             })
             .catch((err) => {
-                if(err.response.status === 403)
+                if (err.response.status === 403)
                     this.props.history.push('/')
                 console.log(err)
             })
-            
+
 
 
     }
@@ -116,22 +116,22 @@ class home extends Component {
             return null
     }
 
-    handleChange(event){
+    handleChange(event) {
         const name = event.target.name;
         console.log(event.target.value)
         this.setState({
-          [name]: event.target.value,
+            [name]: event.target.value,
         });
     }
-    handleClickOpen(){
+    handleClickOpen() {
         this.setState({ isOpen: true });
     };
 
-    handleClose(){
+    handleClose() {
         this.setState({ isOpen: false });
     };
 
-    handleSubmit(e){
+    handleSubmit(e) {
         //post to back end
         e.preventDefault();
         let startSplit = this.state.start.split('-')
@@ -155,73 +155,87 @@ class home extends Component {
         this.setState({ isOpen: false });
     };
 
-    getPic(event){
+    getPic(event) {
         this.setState({
             imageUpload: event.target.files[0]
         })
         console.log(this.imageUpload)
     }
-    handlePicSubmit(e){
+    handlePicSubmit(e) {
         e.preventDefault()
         let id = e.target.name
         console.log(id)
-        if(this.imageUpload === 'n/a'){
+        if (this.imageUpload === 'n/a') {
             return;
         }
         let form_data = new FormData();
-		form_data.append('image', this.state.imageUpload);
-		form_data.append('content', this.state.content);
-		
-		axios
-			.post(`/addGoalPic/${id}`, form_data, {
-				headers: {
-					'content-type': 'multipart/form-data'
-				}
-			})
-			.then(() => {
-				window.location.reload();
-			})
-			.catch((error) => {
-				if (error.response.status === 403) {
-					this.props.history.push('/login');
-				}
-				console.log(error);
+        form_data.append('image', this.state.imageUpload);
+        form_data.append('content', this.state.content);
+
+        axios
+            .post(`/addGoalPic/${id}`, form_data, {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
             })
-            this.setState({
-                imageUpload: 'n/a'
+            .then(() => {
+                window.location.reload();
             })
+            .catch((error) => {
+                if (error.response.status === 403) {
+                    this.props.history.push('/login');
+                }
+                console.log(error);
+            })
+        this.setState({
+            imageUpload: 'n/a'
+        })
     }
 
     render() {
 
-        
+
 
         return (
             //Main div box which will contain all the entire page, needed because must have one parent div for everything
             <div className='home'>
                 <React.Fragment>
                     <CssBaseline />
-                    <MyBar page="My Goals" />
+                    <MyBar renderButtons="true" page="My Goals" />
                     <main>
                         {/* goal unit */}
 
-                        <div >
+                        <Grid >
                             <Container maxWidth="sm">
                                 <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                                     Habitact
-                        </Typography>
+                                </Typography>
                                 <Typography component="h5" variant="h5" align="center" color="textPrimary" gutterBottom>
                                     {this.state.today}
                                 </Typography>
-
-                                <div style={{ marginBottom: "20px", display: 'flex', flexDirection: 'row', justifyContent: 'center' }} >
-                                    <Grid style={{ width: '220px' }} container spacing={1} justify="center">
-                                        <Grid item>
-                                            <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
-                                                Create new goal
+                                <Grid container  justify = "center" style={{ flexGrow: "1", marginBottom: "10px" }} spacing={2}>
+                                            <Grid item >
+                                                <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+                                                    Create new goal
                                             </Button>
-                                        </Grid>
+                                            </Grid>
+                                            <Grid item>
+                                                <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+                                                    Create new goal
+                                            </Button>
+
+                                            </Grid>
+                                            <Grid item>
+                                                <Button variant="contained" color="primary" onClick={this.handleClickOpen}>
+                                                    Create new goal
+                                            </Button>
+                                            </Grid>
                                     </Grid>
+
+                                    
+                                <Grid container spacing = {2} style={{ flexGrow: "1", marginBottom: "20px", display: 'flex', flexDirection: 'row', justifyContent: 'center' }} >
+                                    <Grid style={{ width: '220px' }} container spacing={1} justify="center">
+                                        
 
                                     <Dialog open={this.state.isOpen} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                                         <DialogTitle id="form-dialog-title">Create a Goal</DialogTitle>
@@ -270,54 +284,55 @@ class home extends Component {
                                              </Button>
                                         </DialogActions>
                                     </Dialog>
-                                    <DefautlGoal />
-                                </div>
-
-                            </Container>
-                        </div>
-                        <Container maxWidth="md">
-                            {/* End goal unit */
-                            }
-
-                            <Grid container spacing={4}>
-                                {this.state.goals.filter(g => g !== null).map((goal, index) => (
-                                    <Grid item key={goal.id} xs={12} sm={6} md={4}>
-                                        <Card >
-                                            <CardMedia
-                                                component = "img"
-                                                alt = "add pic for goal"
-                                                height = "140"
-                                                image= {goal.imageUrl}
-                                                title="Image title"
-                                            />
-                                            <CardContent >
-                                                <Typography gutterBottom variant="h5" component="h2">
-                                                    #{index + 1} {goal.title}
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button size="small" color="primary">
-                                                    Complete
-                                                </Button>
-                                                <Button size="small" color="primary">
-                                                    Edit
-                                                </Button>
-                                                <form name={goal.title} onSubmit = {this.handlePicSubmit} >
-                                                    <Button type = "submit" size ="small" color ="primary">Submit</Button>
-                                                    <input type="file" onChange = {this.getPic} />
-                                                </form>
-                                            </CardActions>
-                                        </Card>
                                     </Grid>
-                                ))}
+                                    </Grid>
+                            
+                            </Container>
                             </Grid>
-                        </Container>
+                       
+                            <Container maxWidth="md">
+                                {/* End goal unit */
+                                }
+
+                                <Grid container spacing={4}>
+                                    {this.state.goals.filter(g => g !== null).map((goal, index) => (
+                                        <Grid item key={goal.id} xs={12} sm={6} md={4}>
+                                            <Card >
+                                                <CardMedia
+                                                    component="img"
+                                                    alt="add pic for goal"
+                                                    height="140"
+                                                    image={goal.imageUrl}
+                                                    title="Image title"
+                                                />
+                                                <CardContent >
+                                                    <Typography gutterBottom variant="h5" component="h2">
+                                                        #{index + 1} {goal.title}
+                                                    </Typography>
+                                                </CardContent>
+                                                <CardActions>
+                                                    <Button size="small" color="primary">
+                                                        Complete
+                                                </Button>
+                                                    <Button size="small" color="primary">
+                                                        Edit
+                                                </Button>
+                                                    <form name={goal.title} onSubmit={this.handlePicSubmit} >
+                                                        <Button type="submit" size="small" color="primary">Submit</Button>
+                                                        <input type="file" onChange={this.getPic} />
+                                                    </form>
+                                                </CardActions>
+                                            </Card>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            </Container>
                     </main>
 
 
-                    <BottomNav />
+                        <BottomNav />
                 </React.Fragment>
-            </div>
+            </div >
         )
     }
 }
