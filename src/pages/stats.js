@@ -12,6 +12,13 @@ import {
   Grid
 } from '@material-ui/core'
 
+// Materials UI
+import { 
+  Button,
+  Container,
+  Grid
+} from '@material-ui/core'
+
 const Chart = require("react-chartjs-2").Chart
 
 /*
