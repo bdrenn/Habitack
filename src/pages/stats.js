@@ -6,7 +6,7 @@ import BottomNav from "../Utilities/myBotNav"
 import { authMiddleWare } from '../Utilities/auth'
 
 // Materials UI
-import { 
+import {
   Button,
   Container,
   Grid
@@ -72,8 +72,8 @@ class Stats extends Component {
     super(props)
 
     this.state = {
-      total_goals: 10,
-      goals_completed: 50,
+      total_goals: 0,
+      goals_completed: 0,
       goals: [],
     }
 
@@ -86,16 +86,25 @@ class Stats extends Component {
   }
 
   getPercentageGoalsCompleted() {
-    const completed = this.state.goals.filter(
-      (goal) => goal.completion === false
-    )
-    return Math.floor((completed.length / this.state.goals.length) * 100)
+    var completed = 0
+
+    for (const [index, value] of this.state.goals.entries()) {
+      const start = new Date(value.start)
+      const now = new Date()
+      const timeDiff = now.getTime() - start.getTime()
+      let today_index = Math.floor(Math.abs(timeDiff / (1000 * 3600 * 24)))
+
+      if (value.completion[today_index] == true) {
+        completed += 1
+      }
+    }
+    return Math.floor((completed / this.state.goals.length) * 100)
   }
 
   componentDidMount() {
     authMiddleWare(this.props.history);
-		const authToken = localStorage.getItem('AuthToken');
-		axios.defaults.headers.common = { Authorization: `${authToken}` };
+    const authToken = localStorage.getItem('AuthToken');
+    axios.defaults.headers.common = { Authorization: `${authToken}` };
     axios
       .get("/goals")
       .then((response) => {
@@ -106,16 +115,11 @@ class Stats extends Component {
       })
       .catch((err) => {
 
-          if (err.response.status == 403)
-              this.props.history.push('/')
-          else
-              console.log(err)
+        if (err.response.status == 403)
+          this.props.history.push('/')
+        else
+          console.log(err)
       })
-  }
-
-  handleclick() {
-    console.log(this.state.goals)
-    console.log("Button Pressed!")
   }
 
   render() {
@@ -124,14 +128,11 @@ class Stats extends Component {
         <MyBar page="Goal Stats" />
         <Container component="main" maxWidth="xs">
           <ProgressChart
-            goals_to_complete={this.state.total_goals-this.state.goals_completed}
-            goals_completed={this.state.goals_completed}
+            goals_to_complete={this.getPercentageGoalsIncomplete()}
+            goals_completed={this.getPercentageGoalsCompleted()}
           />
           <Grid container alignItems="center" justify="center">
-          <Button variant="contained" onClick={this.handleclick.bind(this)}>Day</Button>
-          <Button variant="contained" onClick={this.handleclick.bind(this)}>Week</Button>
-          <Button variant="contained" onClick={this.handleclick.bind(this)}>Month</Button>
-          <BottomNav />
+            <BottomNav state={0} />
           </Grid>
         </Container>
       </div>
