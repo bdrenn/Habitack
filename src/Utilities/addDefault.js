@@ -42,6 +42,7 @@ export default function AddDefault() {
         .post("/goal", goal)
         .then((res) => {
             console.log(res)
+            window.location.reload();
         })
         .catch((err) => {
             console.log(err)
@@ -59,13 +60,13 @@ export default function AddDefault() {
     
     return (
         <div >
-                                    <Grid style = {{width: '200px'}}container spacing={2} justify="center">
+                                    
                                         <Grid item>
-                                            <Button style = {{width: '200px'}} variant="contained" color="primary" onClick={handleClickOpen}>
+                                            <Button  variant="contained" color="primary" onClick={handleClickOpen}>
                                                 Add Default Goal
                                             </Button>
                                         </Grid>
-                                    </Grid>
+                                    
 
                                     <Dialog open={isOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
                                         <DialogTitle id="form-dialog-title">Create a Goal</DialogTitle>
