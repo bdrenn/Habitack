@@ -20,7 +20,7 @@ export default function BoilerPlate() {
             <Container maxWidth='xs'>
                 {/* Habitack page Title (replace with logo in laster sprint) */}
                 <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                    Habitact
+                    Habitack
                 </Typography>
                 <div className='content'>
                     {/* Place your content Here* */}
