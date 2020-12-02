@@ -8,7 +8,7 @@ export default function LogoutButton () {
     const handleLogOut = (e) => {
         e.preventDefault();
         localStorage.removeItem('AuthToken');
-		this.props.history.push('/login');
+        window.open("/", "_self")
         }
     
     return (
