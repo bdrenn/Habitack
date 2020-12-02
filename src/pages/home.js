@@ -269,13 +269,17 @@ class home extends Component {
     }
 
     handleDeleteSave() {
+        let length = this.state.deleteArr.length
+        
         this.state.deleteArr.map(goal => {
             axios
                 .delete(`/goal/${goal}`)
                 .then((res) => {
                     console.log(res)
-                    window.location.reload();
-
+                    --length
+                    if(!length){
+                        window.location.reload()
+                    }
                 })
                 .catch((err) => {
                     console.log(err)
@@ -285,8 +289,14 @@ class home extends Component {
         this.setState({
             deleteOpen: false
         })
+        console.log(length)
+        if(length === 0){
+            window.location.reload()
+        }
 
     }
+
+    
     componentDidUpdate() {
         console.log(this.state.deleteArr)
     }
