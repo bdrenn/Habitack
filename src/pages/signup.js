@@ -109,7 +109,7 @@ class signup extends Component {
     const { errors, loading } = this.state
     return (
       <div>
-        <MyBar page="Sign Up" />
+        <MyBar renderButtons = "false" page="Sign Up" />
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <div className={classes.paper}>
