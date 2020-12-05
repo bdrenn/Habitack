@@ -3,23 +3,18 @@
 
 import React, { Component } from 'react';
 //import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Link from '@material-ui/core/Link';
 import MyBar from "../Utilities/myBar";
 import BottomNav from "../Utilities/myBotNav";
-import { FitnessCenter as workoutIcon } from '@material-ui/icons';
 import axios from "axios";
 import { authMiddleWare } from '../Utilities/auth'
 
@@ -30,6 +25,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DefaultGoal from '../Utilities/addDefault';
+import EditGoal from '../Utilities/editGoalButton';
 import defaultIMG from "../img/defaultIMG.png";
 import completeIMG from "../img/complete.png";
 import List from '@material-ui/core/List'
@@ -111,9 +107,9 @@ class home extends Component {
             .catch((err) => {
 
                 if (err.response.status == 403)
-                this.props.history.push('/')
-                 else
-                console.log(err)
+                    this.props.history.push('/')
+                else
+                    console.log(err)
             })
 
 
@@ -269,6 +265,12 @@ class home extends Component {
         })
     }
 
+
+    handleEditGoal(event) {
+        console.log(this.state.isOpen)
+    };
+
+
     handleDelete(index) {
         let id = this.state.goals[index].title
         console.log(id)
@@ -280,16 +282,18 @@ class home extends Component {
 
     }
 
+
+
     handleDeleteSave() {
         let length = this.state.deleteArr.length
-        
+
         this.state.deleteArr.map(goal => {
             axios
                 .delete(`/goal/${goal}`)
                 .then((res) => {
                     console.log(res)
                     --length
-                    if(!length){
+                    if (!length) {
                         window.location.reload()
                     }
                 })
@@ -302,13 +306,13 @@ class home extends Component {
             deleteOpen: false
         })
         console.log(length)
-        if(length === 0){
+        if (length === 0) {
             window.location.reload()
         }
 
     }
 
-    
+
     componentDidUpdate() {
         console.log(this.state.deleteArr)
     }
@@ -404,8 +408,8 @@ class home extends Component {
                                         </Dialog>
                                         <Dialog open={this.state.deleteOpen} onClose={this.handleClose} aria-labelledby="form-dialog-title">
                                             <DialogContent >
-                                            <DialogContentText>
-                                                                                Press save to delete goals highlighted red, press cancel to keep goals
+                                                <DialogContentText>
+                                                    Press save to delete goals highlighted red, press cancel to keep goals
                                                                              </DialogContentText>
                                                 <div style={{ flexGrow: '1', maxWidth: '752' }}>
                                                     <Grid container spacing={2}  >
@@ -435,7 +439,7 @@ class home extends Component {
                                                     Cancel
                                             </Button>
                                                 <Button onClick={this.handleDeleteSave} color="primary">
-                                                    Save
+                                                    Confirm
                                              </Button>
                                             </DialogActions>
                                         </Dialog>
@@ -468,9 +472,7 @@ class home extends Component {
                                                 <Button onClick={() => this.handleCompleteGoal(index)} size="small" color="primary">
                                                     Complete
                                                 </Button>
-                                                <Button size="small" color="primary">
-                                                    Edit
-                                                </Button>
+                                                <EditGoal title={goal.title} />
                                                 <form name={goal.title} onSubmit={this.handlePicSubmit} >
                                                     <Button type="submit" size="small" color="primary">Submit</Button>
                                                     <input type="file" onChange={this.getPic} />

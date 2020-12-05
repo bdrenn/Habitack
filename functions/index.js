@@ -28,7 +28,7 @@ const {
 app.get("/goals", auth, getAllGoals); //works
 app.post("/goal", auth, addGoal); //works
 app.delete("/goal/:goalId", auth, deleteGoal); //works
-app.put("/goal/:goalId", editGoal); 
+app.put("/goal/", editGoal); 
 app.post("/addGoalPic/:goalId",auth, addGoalPic); //works
 app.get("/getGoalPic/:goalId", auth, getGoalPic); 
 app.put("/complete/:goalId", auth, updateCompletionField); //works

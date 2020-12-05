@@ -5,6 +5,13 @@ import MyBar from "../Utilities/myBar"
 import BottomNav from "../Utilities/myBotNav"
 import { authMiddleWare } from '../Utilities/auth'
 
+// Materials UI
+import {
+  Button,
+  Container,
+  Grid
+} from '@material-ui/core'
+
 const Chart = require("react-chartjs-2").Chart
 
 /*
@@ -41,7 +48,7 @@ class ProgressChart extends Component {
           data={{
             datasets: [
               {
-                data: [this.props.total_goals, this.props.goals_completed],
+                data: [this.props.goals_to_complete, this.props.goals_completed],
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.5)",
                   "rgba(54, 162, 235, 0.2)",
@@ -79,16 +86,25 @@ class Stats extends Component {
   }
 
   getPercentageGoalsCompleted() {
-    const completed = this.state.goals.filter(
-      (goal) => goal.completion === false
-    )
-    return Math.floor((completed.length / this.state.goals.length) * 100)
+    var completed = 0
+
+    for (const [index, value] of this.state.goals.entries()) {
+      const start = new Date(value.start)
+      const now = new Date()
+      const timeDiff = now.getTime() - start.getTime()
+      let today_index = Math.floor(Math.abs(timeDiff / (1000 * 3600 * 24)))
+
+      if (value.completion[today_index] == true) {
+        completed += 1
+      }
+    }
+    return Math.floor((completed / this.state.goals.length) * 100)
   }
 
   componentDidMount() {
     authMiddleWare(this.props.history);
-		const authToken = localStorage.getItem('AuthToken');
-		axios.defaults.headers.common = { Authorization: `${authToken}` };
+    const authToken = localStorage.getItem('AuthToken');
+    axios.defaults.headers.common = { Authorization: `${authToken}` };
     axios
       .get("/goals")
       .then((response) => {
@@ -99,10 +115,10 @@ class Stats extends Component {
       })
       .catch((err) => {
 
-          if (err.response.status == 403)
-              this.props.history.push('/')
-          else
-              console.log(err)
+        if (err.response.status == 403)
+          this.props.history.push('/')
+        else
+          console.log(err)
       })
   }
 
@@ -110,11 +126,15 @@ class Stats extends Component {
     return (
       <div>
         <MyBar page="Goal Stats" />
-        <ProgressChart
-          total_goals={this.getPercentageGoalsIncomplete()}
-          goals_completed={this.getPercentageGoalsCompleted()}
-        />
-        <BottomNav state={0}/>
+        <Container component="main" maxWidth="xs">
+          <ProgressChart
+            goals_to_complete={this.getPercentageGoalsIncomplete()}
+            goals_completed={this.getPercentageGoalsCompleted()}
+          />
+          <Grid container alignItems="center" justify="center">
+            <BottomNav state={0} />
+          </Grid>
+        </Container>
       </div>
     )
   }
