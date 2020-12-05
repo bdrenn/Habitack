@@ -65,7 +65,8 @@ class EditAccount extends React.Component {
       userName: "",
       displayName: "",
       passOne: "",
-      passTwo: ""
+      passTwo: "",
+      changeName: ""
     }
     this.handleChange = this.handleChange.bind(this);
     this.updateUserName = this.updateUserName.bind(this);
@@ -92,7 +93,7 @@ class EditAccount extends React.Component {
   updateUserName = (e) => {
     e.preventDefault();
     console.log("clicked update")
-    var res = this.state.firstName.split(" ")
+    var res = this.state.changeName.split(" ")
     const account = { 
       firstName: res[0],
       lastName: res[1],
@@ -103,7 +104,7 @@ class EditAccount extends React.Component {
     axios.put("/updateUser", account)
     .then((respone) => {
       console.log(respone)
-      this.props.history.push('/EditAccount')
+      window.location.reload();
     })
     .catch((error) => {
       console.log(error)
@@ -122,7 +123,7 @@ class EditAccount extends React.Component {
     axios.put("/updateEmail", account)
     .then((respone) => {
       console.log(respone)
-      this.props.history.push('/EditAccount')
+      window.location.reload();
     })
     .catch((error) => {
       console.log(error)
@@ -139,6 +140,7 @@ class EditAccount extends React.Component {
       axios.put("/updatePass", account)
       .then((response) => {
         console.log("success changing password")
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error)
@@ -152,6 +154,7 @@ class EditAccount extends React.Component {
     axios.put("/changeDisplay", account)
     .then((response) => {
       console.log("success changing display name")
+      window.location.reload();
     })
     .catch((error) => {
       console.log(error)
@@ -207,7 +210,7 @@ class EditAccount extends React.Component {
                     <div>
                         <div>
                             <label>Full Name</label> <br></br>
-                            <input onChange={e => this.setState({ firstName: e.target.value })} style={{ width: "250px" }} type="text" placeholder={this.state.firstName + " " + this.state.lastName} name="new-name"></input>
+                            <input onChange={e => this.setState({ changeName: e.target.value })} style={{ width: "250px" }} type="text" placeholder={this.state.firstName + " " + this.state.lastName} name="new-name"></input>
                         </div>
                         <Button onClick = {this.updateUserName} color="primary">Submit</Button>
                     </div>
