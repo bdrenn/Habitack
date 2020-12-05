@@ -139,13 +139,14 @@ exports.updateEmail = (request, response) => {
     })
   .then(() => {
       response.json({message: 'updated successfully'})
+      var user = firebase.auth().currentUser;
+      console.log(user.email)
+      return firebase.auth().currentUser.updateEmail(request.body.email)
   })
   .catch((err) => {
       console.error("Error updating email: ", error);
       })
-      var user = firebase.auth().currentUser;
-      console.log(user.email)
-      return firebase.auth().currentUser.updateEmail(request.body.email)
+      
     .then(() => {
       response.json({ message: "success using auth"} )
     })
@@ -165,7 +166,7 @@ exports.updatePass = (request, response) => {
 }
 
 exports.changeDisplay = (request, response) => {
-  let document = db.collection('users').doc(`${request.body.userName}`);
+  let document = db.collection('users').doc(`${request.body.username}`);
     return document.update({
         displayname: request.body.displayName,
     })
@@ -173,7 +174,7 @@ exports.changeDisplay = (request, response) => {
       response.json({message: 'updated successfully'})
   })
   .catch((err) => {
-      console.error("Error updating name: ", error);
+      console.error("Error updating name: ", err);
       });
 }
 
