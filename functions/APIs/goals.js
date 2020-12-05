@@ -121,8 +121,9 @@ exports.deleteGoal = (request, response) => {
 
 // Edit a goal
 exports.editGoal = (request, response) => {
-  let document = db.collection('goals').doc(`${request.params.goalId}`);
-  document.update(request.body)
+  
+  let document = db.collection('users').doc(`${request.user.username}`).collection("goals").doc(`${request.params.goalId}`);
+  document.set(request.body, {merge: true})
   .then(() => {
     response.json({message: 'Updated successfully!'});
   })
