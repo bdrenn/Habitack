@@ -35,13 +35,15 @@ export default function EditGoalButton(props) {
         let start = `${startSplit[1]}-${startSplit[2]}-${startSplit[0]}`
         let endSplit = state.end.split('-')
         let end = `${endSplit[1]}-${endSplit[2]}-${endSplit[0]}`
+        let title = state.title.trim();
+        
 
-        let goal = { title: state.title, start: start, end: end }
+        let goal = { title: title, start: start, end: end }
         console.log(goal);
         console.log(`${props.title}`)
-
+        
         axios
-            .put(`/goal/${props.title}`, goal)
+            .delete(`/goal/${props.title}`)
             .then((res) => {
                 console.log(res)
             })
@@ -49,6 +51,16 @@ export default function EditGoalButton(props) {
                 console.log(err)
 
             })
+        axios
+            .post("/goal", goal)
+            .then((res) => {
+                console.log(res)
+                window.location.reload();
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        
 
 
         setOpen(false);

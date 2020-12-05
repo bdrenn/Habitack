@@ -40,7 +40,7 @@ import Goals from '../Utilities/Goals';
 import AddGoal from '../Utilities/AddGoal';
 const useStyles = theme => ({
     root: {
-      height: 320,
+      height: 330,
       width: 330,
       
     },
@@ -48,8 +48,7 @@ const useStyles = theme => ({
         height: 70,
     },
     img: {
-        maxHeight: 200
-
+        maxHeight: 168
     }
       });
 
