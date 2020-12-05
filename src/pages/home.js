@@ -11,6 +11,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import MyBar from "../Utilities/myBar";
 import BottomNav from "../Utilities/myBotNav";
@@ -37,12 +38,23 @@ import ListItem from '@material-ui/core/ListItem'
 
 import Goals from '../Utilities/Goals';
 import AddGoal from '../Utilities/AddGoal';
-
-
+const useStyles = theme => ({
+    root: {
+      height: 330,
+      width: 330,
+      
+    },
+    text:{
+        height: 70,
+    },
+    img: {
+        maxHeight: 168
+    }
+      });
 
 
 class home extends Component {
-
+    
     constructor(props) {
         super(props)
 
@@ -303,11 +315,8 @@ class home extends Component {
     componentDidUpdate() {
         console.log(this.state.deleteArr)
     }
-
     render() {
-
-
-
+        const { classes } = this.props;
         return (
             //Main div box which will contain all the entire page, needed because must have one parent div for everything
             <div className='home'>
@@ -438,21 +447,22 @@ class home extends Component {
 
                             </Container>
                         </Grid>
-                        <Container maxWidth="md">
+                        <Container maxWidth="lg">
                             {/* End goal unit */
                             }
 
-                            <Grid container spacing={4}>
+                            <Grid container  spacing={4}>
                                 {this.state.goals.filter(g => g !== null).map((goal, index) => (
-                                    <Grid item key={goal.id} xs={12} sm={6} md={4}>
-                                        <Card >
+                                    <Grid item key={goal.id}  xs={12} sm={6} md={4}>
+                                        <Card className = {classes.root}>
                                             <CardMedia
+                                                className = {classes.img}
                                                 component="img"
                                                 alt="add pic for goal"
                                                 image={goal.imageUrl}
                                                 title="Image title"
                                             />
-                                            <CardContent >
+                                            <CardContent  className = {classes.text}>
                                                 <Typography gutterBottom variant="h5" component="h2">
                                                     #{index + 1} {goal.title}
                                                 </Typography>
@@ -484,4 +494,4 @@ class home extends Component {
 
 
 
-export default home
+export default withStyles(useStyles)(home)

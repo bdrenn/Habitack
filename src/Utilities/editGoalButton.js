@@ -12,7 +12,7 @@ import axios from 'axios'
 
 export default function EditGoalButton(props) {
     const [state, setState] = React.useState({
-        title: props.title,
+        title: props.title.toString(),
         start: '',
         end: '',
     });
@@ -35,10 +35,13 @@ export default function EditGoalButton(props) {
         let start = `${startSplit[1]}-${startSplit[2]}-${startSplit[0]}`
         let endSplit = state.end.split('-')
         let end = `${endSplit[1]}-${endSplit[2]}-${endSplit[0]}`
+        let title = state.title.trim();
+        
 
-        let goal = { title: state.title, start: start, end: end }
+        let goal = { title: title, start: start, end: end }
         console.log(goal);
-
+        console.log(`${props.title}`)
+        
         axios
             .delete(`/goal/${props.title}`)
             .then((res) => {
@@ -57,6 +60,7 @@ export default function EditGoalButton(props) {
             .catch((err) => {
                 console.log(err)
             })
+        
 
 
         setOpen(false);
