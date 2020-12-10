@@ -12,10 +12,13 @@ import { authMiddleWare } from '../Utilities/auth'
 
 
 class myCalendar extends Component {
-    
+
+    //class consturctor 
     constructor(props) {
+        //pass args to super class
         super(props)
 
+        //init state variables 
         this.state = {
             goals: [],
             goalsAPI: []
@@ -23,21 +26,28 @@ class myCalendar extends Component {
         
     }
 
+    //method is called when component is lauched, make API calls
     componentDidMount() {
+        //get the token to authenticate user
         authMiddleWare(this.props.history);
 		const authToken = localStorage.getItem('AuthToken');
 		axios.defaults.headers.common = { Authorization: `${authToken}` };
         axios
+            //pull the users goals 
             .get("/goals")
             .then((response) => {
                 this.setState({
+                    //set the goalsAPI list to the response from API call
                     goalsAPI: response.data,
                 })
+                //format the goals to use with scheduler tool
                 this.formatter()
+                //log the states of the lists 
                 console.log("mount :", this.state.goalsAPI)
                 console.log("after :", this.state.goals)
                 
             })
+            //if error return to home page
             .catch((err) => {
                 if (err.response.status == 403)
                     this.props.history.push('/')
@@ -46,8 +56,11 @@ class myCalendar extends Component {
             })
     }
 
+    //conditionally render the calendar
     displayCalendar() {
+        //check if API call is done
         if (this.state.goals && this.state.goals.length > 0) {
+            //pass the goals to the scheudler tool
             return <Scheduler
                 data={this.state.goals}
             >
@@ -61,12 +74,14 @@ class myCalendar extends Component {
                 <Appointments />
             </Scheduler>;
         }
+        //if API call not done display circular progress
         return <Typography align="center" >
                   <CircularProgress />
                </Typography>
     }
 
     formatter() {
+        //format the goals into data for the scheudler tool by mapping through the goals
         //example { startDate: '2020-11-18T09:45', endDate: '2020-11-18T11:00', title: 'Read' },
         
         this.state.goalsAPI.map((goal, index) => (
@@ -86,6 +101,7 @@ class myCalendar extends Component {
        
     };
 
+    //format the date time group
     formatDate(date, startFlag) {
         var year = date.slice(6, 10);
         var dtg = year + "-";
@@ -100,6 +116,7 @@ class myCalendar extends Component {
         return dtg;
     };
 
+    //count the times of days the goal will repeat
     repeatCount(startGoal, endGoal) {
         var rule = 'FREQ=DAILY;COUNT=';
         var startday = startGoal.slice(3, 5);
@@ -116,7 +133,7 @@ class myCalendar extends Component {
         const currentDate = '2020-11';
 
         
-
+        //main calendar function
         return (
             //Main div box which will contain all the entire page, needed because must have one parent div for everything
             <div className='calendar'>
@@ -125,8 +142,6 @@ class myCalendar extends Component {
 
                 {/* This container is the essentially a <div> but can define the max allowed width */}
                 <Container maxWidth='lg' align="center"  >
-
-
 
                     <div className='calendar'>
                         {/* This is a calendar view, can also set to DayView instead of MonthView*/}
@@ -137,8 +152,8 @@ class myCalendar extends Component {
                         {this.displayCalendar()}
                                                 
                     </div>
-                    {/* Bottom navigation module */}
-                    <BottomNav state={2} />
+                    {/* Bottom navigation module with calendar as state */}
+                    <BottomNav state={2} /> 
                 </Container>
             </div>
         )

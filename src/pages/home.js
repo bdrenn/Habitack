@@ -34,10 +34,10 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import ListItem from '@material-ui/core/ListItem'
-
-
 import Goals from '../Utilities/Goals';
 import AddGoal from '../Utilities/AddGoal';
+
+//define css for home page
 const useStyles = theme => ({
     root: {
       height: 330,
@@ -58,6 +58,7 @@ class home extends Component {
     constructor(props) {
         super(props)
 
+        //init the state variables 
         this.state = {
             isOpen: false,
             deleteOpen: false,
@@ -70,6 +71,7 @@ class home extends Component {
             imageUpload: 'n/a',
             deleteArr: []
         }
+        //bind the fields and buttons
         this.setDate = this.setDate.bind(this)
         this.filterGoals = this.filterGoals.bind(this)
         this.isToday = this.isToday.bind(this)
@@ -86,23 +88,28 @@ class home extends Component {
 
     }
 
+    //gets called with component, make API calls
     componentDidMount() {
-
+        //authenticate user with token
         authMiddleWare(this.props.history);
         const authToken = localStorage.getItem('AuthToken');
         axios.defaults.headers.common = { Authorization: `${authToken}` };
         axios
+            //get the goals for the user and save to goalsAPI list
             .get("/goals")
             .then((response) => {
                 this.setState({
                     goalsAPI: response.data,
                 })
-
+                //log the goalsAPI to console
                 console.log("mount :", this.state.goalsAPI)
+                //set todays date for rendering 
                 this.setDate()
+                //filter to render only todays goals
                 this.filterGoals()
 
             })
+            //if api call failed log it and go to sign in page
             .catch((err) => {
 
                 if (err.response.status == 403)
@@ -115,12 +122,14 @@ class home extends Component {
 
     }
 
+    //get todays date 
     setDate() {
         this.state.today = new Date().toLocaleString();
         var day = this.state.today.split(',');
         this.setState({ today: day[0] });
     }
 
+    //map through the goals and identify goals for today via method call
     filterGoals() {
         this.state.goalsAPI.map((goal, index) => (
             //this.state.goals[index] = { id: goal.goalsId, title: goal.title }, 
@@ -133,22 +142,27 @@ class home extends Component {
         });
     }
 
+    //check if a goal is for today 
     isToday(goal) {
         var today = new Date(this.state.today)
         var start = new Date(goal.start)
         var end = new Date(goal.end)
         var index = this.getIndex(start, today)
+        // compare today to start and end
         if (today <= end && today >= start) {
+            //set image to default if no image is defined and goal is not complete
             if (goal.imageUrl == "" && goal.completion[index] != true) {
                 goal.imageUrl = defaultIMG;
                 console.log("use default")
             }
+            //if goal is complete set image to checkmark
             else if (goal.completion[index] == true) {
                 goal.imageUrl = completeIMG;
                 console.log(goal.title, "is complete");
             }
             return goal
         }
+        //if goal is not valid today set goal to null
         else {
             console.log("false -", today, start, end)
             return null
@@ -156,11 +170,12 @@ class home extends Component {
 
     }
 
+    //get the index for the completion array , e.g. monday is index 1 in a goal from Sunday to Saturday
     getIndex(start, end) {
         console.log("index is-", Math.round((end - start) / (1000 * 60 * 60 * 24)))
         return Math.round((end - start) / (1000 * 60 * 60 * 24));
     }
-
+    //method to handle a change event from the UI
     handleChange(event) {
         const name = event.target.name;
         console.log(event.target.value)
@@ -168,32 +183,38 @@ class home extends Component {
             [name]: event.target.value,
         });
     }
+    //handle for user to open form 
     handleClickOpen(event) {
         this.setState({
             isOpen: true
         });
     };
-
+    //handle for user to close form
     handleClose(event) {
         this.setState({
             isOpen: false
         });
     };
 
+    //handle to close the delete UI
     handleCloseDelete() {
         this.setState({ deleteOpen: false })
     }
 
+    //set a goal as complete for the day
     handleCompleteGoal(index) {
+        //find the index for the completion array
         const start = new Date(this.state.goals[index].start)
         const now = new Date()
         const timeDiff = now.getTime() - start.getTime()
         let today_index = Math.floor(Math.abs(timeDiff / (1000 * 3600 * 24)))
 
+        //set the value to true
         const completion = this.state.goals[index].completion
         completion[today_index] = true
         console.log(completion)
         axios
+            //update the backend with the new array value
             .put(`/complete/${this.state.goals[index].title}`, { completion: completion })
             .then(() => {
                 window.location.reload();
@@ -202,7 +223,7 @@ class home extends Component {
                 console.log(err)
             })
     }
-
+    //submit a goal to the back end
     handleSubmit(e) {
         //post to back end
         e.preventDefault();
@@ -211,48 +232,56 @@ class home extends Component {
         let endSplit = this.state.end.split('-')
         let end = `${endSplit[1]}-${endSplit[2]}-${endSplit[0]}`
         let trimTitle = this.state.title.trim();
-
+        //format goal 
         let goal = { title: trimTitle, start: start, end: end }
         console.log(goal);
 
         axios
+            //push to backend 
             .post("/goal", goal)
             .then(() => {
                 console.log("here")
                 window.location.reload();
             })
+            //log if fails 
             .catch((err) => {
                 console.log(err)
             })
+        //close the popup menu
         this.setState({ isOpen: false });
     };
-
+    // load the image
     getPic(event) {
         this.setState({
             imageUpload: event.target.files[0]
         })
         console.log(this.imageUpload)
     }
+    //handle a submit from the UI
     handlePicSubmit(e) {
         e.preventDefault()
         let id = e.target.name
         console.log(id)
+        //if no image ignore and return
         if (this.imageUpload === 'n/a') {
             return;
         }
+        //save the image 
         let form_data = new FormData();
         form_data.append('image', this.state.imageUpload);
         form_data.append('content', this.state.content);
-
+        //post the image to backend
         axios
             .post(`/addGoalPic/${id}`, form_data, {
                 headers: {
                     'content-type': 'multipart/form-data'
                 }
             })
+            //reload the page
             .then(() => {
                 window.location.reload();
             })
+            //if error return to login page
             .catch((error) => {
                 if (error.response.status === 403) {
                     this.props.history.push('/login');
@@ -264,15 +293,17 @@ class home extends Component {
         })
     }
 
-
+    //edit goal handle for event on UI
     handleEditGoal(event) {
         console.log(this.state.isOpen)
     };
 
-
+    //handle from UI to delte goal
     handleDelete(index) {
+        //get the goal id
         let id = this.state.goals[index].title
         console.log(id)
+        // append the goal to be deleted into deleteArr
         this.setState(prevState => ({
             deleteArr: [...prevState.deleteArr, id]
         }))
@@ -282,28 +313,34 @@ class home extends Component {
     }
 
 
-
+    //delete goals from backend
     handleDeleteSave() {
         let length = this.state.deleteArr.length
 
+        //map through array of goals to delete
         this.state.deleteArr.map(goal => {
             axios
+                //delete the current goal
                 .delete(`/goal/${goal}`)
                 .then((res) => {
                     console.log(res)
                     --length
+                    //if done refresh window
                     if (!length) {
                         window.location.reload()
                     }
                 })
+                //if fails, log error
                 .catch((err) => {
                     console.log(err)
 
                 })
         })
+        //close the delte form
         this.setState({
             deleteOpen: false
         })
+        //reload the page
         console.log(length)
         if (length === 0) {
             window.location.reload()
@@ -311,10 +348,11 @@ class home extends Component {
 
     }
 
-
+    //on update log the state of deleteArr
     componentDidUpdate() {
         console.log(this.state.deleteArr)
     }
+
     render() {
         const { classes } = this.props;
         return (
@@ -327,6 +365,7 @@ class home extends Component {
                         {/* goal unit */}
                         <Grid >
                             <Container maxWidth="sm">
+                                
                                 <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                                     Habitack
                         </Typography>
